@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parsevoir", "Parsevoir\Parsevoir.csproj", "{A39C28FF-1700-42D1-9863-9050413C7481}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parsevoir.Tests", "Parsevoir.Tests\Parsevoir.Tests.csproj", "{0C5423DB-25B2-42F7-A583-90CBF15CB3BE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{962053AA-6F3F-496D-9084-44D87A22C668}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A39C28FF-1700-42D1-9863-9050413C7481}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A39C28FF-1700-42D1-9863-9050413C7481}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A39C28FF-1700-42D1-9863-9050413C7481}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A39C28FF-1700-42D1-9863-9050413C7481}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C5423DB-25B2-42F7-A583-90CBF15CB3BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C5423DB-25B2-42F7-A583-90CBF15CB3BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C5423DB-25B2-42F7-A583-90CBF15CB3BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C5423DB-25B2-42F7-A583-90CBF15CB3BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A30BDF89-154D-49AD-9D10-B036264C4E3A}
+	EndGlobalSection
+EndGlobal
