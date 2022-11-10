@@ -44,7 +44,7 @@ internal static class CustomConverter
             TypeCode.Decimal => (T) (object) Decimal.Parse(text),
             TypeCode.DateTime => (T) (object) DateTime.Parse(text),
             TypeCode.String => (T) (object) text,
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new ArgumentOutOfRangeException(nameof(typeCode), $"Invalid type passed! Type: {typeof(T).Name}")
         };
     }
 }
