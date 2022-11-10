@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Authors>Nightkodem</Authors>
+        <Description>Library for extracting simple data from strings using a straightforward interface.</Description>
+        <PackageId>thunderflow.parsevoir</PackageId>
+        <Title>Parsevoir</Title>
+        <Copyright>GNU General Public License v3.0</Copyright>
+        <PackageLicenseUrl>https://github.com/Nightkodem/Parsevoir/blob/main/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/Nightkodem/Parsevoir</RepositoryUrl>
+        <PackageTags>Parser</PackageTags>
+        <PackageReleaseNotes>##1.0.0
+Initial release.</PackageReleaseNotes>
+    </PropertyGroup>
+
+</Project>
