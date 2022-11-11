@@ -10,10 +10,10 @@ public static partial class Parse
     {
         const int results = 1;
 
-        string[] splits = StringSplitter.Split(source, template, results, bracketsCount, options);
+        var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
+        SplitResult[] splits = stringSplitter.Split();
 
-        T value = CustomConverter.Convert<T>(splits[0]);
-        return value;
+        return SplitsConverter.ToResults<T>(splits);
     }
     
     public static (T0, T1) Single<T0, T1>(string source, string template, int bracketsCount = 1, ParsingOptions? options = null)
@@ -22,11 +22,10 @@ public static partial class Parse
     {
         const int results = 2;
 
-        string[] splits = StringSplitter.Split(source, template, results, bracketsCount, options);
-
-        T0 val0 = CustomConverter.Convert<T0>(splits[0]);
-        T1 val1 = CustomConverter.Convert<T1>(splits[1]);
-        return (val0, val1);
+        var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
+        SplitResult[] splits = stringSplitter.Split();
+        
+        return SplitsConverter.ToResults<T0, T1>(splits);
     }
     
     public static (T0, T1, T2) Single<T0, T1, T2>(string source, string template, int bracketsCount = 1, ParsingOptions? options = null)
@@ -36,12 +35,10 @@ public static partial class Parse
     {
         const int results = 3;
 
-        string[] splits = StringSplitter.Split(source, template, results, bracketsCount, options);
+        var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
+        SplitResult[] splits = stringSplitter.Split();
 
-        T0 val0 = CustomConverter.Convert<T0>(splits[0]);
-        T1 val1 = CustomConverter.Convert<T1>(splits[1]);
-        T2 val2 = CustomConverter.Convert<T2>(splits[2]);
-        return (val0, val1, val2);
+        return SplitsConverter.ToResults<T0, T1, T2>(splits);
     }
     
     public static (T0, T1, T2, T3) Single<T0, T1, T2, T3>(string source, string template, int bracketsCount = 1, ParsingOptions? options = null)
@@ -52,13 +49,10 @@ public static partial class Parse
     {
         const int results = 4;
 
-        string[] splits = StringSplitter.Split(source, template, results, bracketsCount, options);
+        var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
+        SplitResult[] splits = stringSplitter.Split();
 
-        T0 val0 = CustomConverter.Convert<T0>(splits[0]);
-        T1 val1 = CustomConverter.Convert<T1>(splits[1]);
-        T2 val2 = CustomConverter.Convert<T2>(splits[2]);
-        T3 val3 = CustomConverter.Convert<T3>(splits[3]);
-        return (val0, val1, val2, val3);
+        return SplitsConverter.ToResults<T0, T1, T2, T3>(splits);
     }
     
     public static (T0, T1, T2, T3, T4) Single<T0, T1, T2, T3, T4>(string source, string template, int bracketsCount = 1, ParsingOptions? options = null)
@@ -70,14 +64,10 @@ public static partial class Parse
     {
         const int results = 5;
 
-        string[] splits = StringSplitter.Split(source, template, results, bracketsCount, options);
+        var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
+        SplitResult[] splits = stringSplitter.Split();
 
-        T0 val0 = CustomConverter.Convert<T0>(splits[0]);
-        T1 val1 = CustomConverter.Convert<T1>(splits[1]);
-        T2 val2 = CustomConverter.Convert<T2>(splits[2]);
-        T3 val3 = CustomConverter.Convert<T3>(splits[3]);
-        T4 val4 = CustomConverter.Convert<T4>(splits[4]);
-        return (val0, val1, val2, val3, val4);
+        return SplitsConverter.ToResults<T0, T1, T2, T3, T4>(splits);
     }
     
     public static (T0, T1, T2, T3, T4, T5) Single<T0, T1, T2, T3, T4, T5>(string source, string template, int bracketsCount = 1, ParsingOptions? options = null)
@@ -90,15 +80,10 @@ public static partial class Parse
     {
         const int results = 6;
 
-        string[] splits = StringSplitter.Split(source, template, results, bracketsCount, options);
+        var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
+        SplitResult[] splits = stringSplitter.Split();
 
-        T0 val0 = CustomConverter.Convert<T0>(splits[0]);
-        T1 val1 = CustomConverter.Convert<T1>(splits[1]);
-        T2 val2 = CustomConverter.Convert<T2>(splits[2]);
-        T3 val3 = CustomConverter.Convert<T3>(splits[3]);
-        T4 val4 = CustomConverter.Convert<T4>(splits[4]);
-        T5 val5 = CustomConverter.Convert<T5>(splits[5]);
-        return (val0, val1, val2, val3, val4, val5);
+        return SplitsConverter.ToResults<T0, T1, T2, T3, T4, T5>(splits);
     }
     
     public static (T0, T1, T2, T3, T4, T5, T6) Single<T0, T1, T2, T3, T4, T5, T6>(string source, string template, int bracketsCount = 1, ParsingOptions? options = null)
@@ -112,16 +97,10 @@ public static partial class Parse
     {
         const int results = 7;
 
-        string[] splits = StringSplitter.Split(source, template, results, bracketsCount, options);
+        var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
+        SplitResult[] splits = stringSplitter.Split();
 
-        T0 val0 = CustomConverter.Convert<T0>(splits[0]);
-        T1 val1 = CustomConverter.Convert<T1>(splits[1]);
-        T2 val2 = CustomConverter.Convert<T2>(splits[2]);
-        T3 val3 = CustomConverter.Convert<T3>(splits[3]);
-        T4 val4 = CustomConverter.Convert<T4>(splits[4]);
-        T5 val5 = CustomConverter.Convert<T5>(splits[5]);
-        T6 val6 = CustomConverter.Convert<T6>(splits[6]);
-        return (val0, val1, val2, val3, val4, val5, val6);
+        return SplitsConverter.ToResults<T0, T1, T2, T3, T4, T5, T6>(splits);
     }
     
     public static (T0, T1, T2, T3, T4, T5, T6, T7) Single<T0, T1, T2, T3, T4, T5, T6, T7>(string source, string template, int bracketsCount = 1, ParsingOptions? options = null)
@@ -136,17 +115,10 @@ public static partial class Parse
     {
         const int results = 8;
 
-        string[] splits = StringSplitter.Split(source, template, results, bracketsCount, options);
+        var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
+        SplitResult[] splits = stringSplitter.Split();
 
-        T0 val0 = CustomConverter.Convert<T0>(splits[0]);
-        T1 val1 = CustomConverter.Convert<T1>(splits[1]);
-        T2 val2 = CustomConverter.Convert<T2>(splits[2]);
-        T3 val3 = CustomConverter.Convert<T3>(splits[3]);
-        T4 val4 = CustomConverter.Convert<T4>(splits[4]);
-        T5 val5 = CustomConverter.Convert<T5>(splits[5]);
-        T6 val6 = CustomConverter.Convert<T6>(splits[6]);
-        T7 val7 = CustomConverter.Convert<T7>(splits[7]);
-        return (val0, val1, val2, val3, val4, val5, val6, val7);
+        return SplitsConverter.ToResults<T0, T1, T2, T3, T4, T5, T6, T7>(splits);
     }
     
     public static (T0, T1, T2, T3, T4, T5, T6, T7, T8) Single<T0, T1, T2, T3, T4, T5, T6, T7, T8>(string source, string template, int bracketsCount = 1, ParsingOptions? options = null)
@@ -162,18 +134,10 @@ public static partial class Parse
     {
         const int results = 9;
 
-        string[] splits = StringSplitter.Split(source, template, results, bracketsCount, options);
+        var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
+        SplitResult[] splits = stringSplitter.Split();
 
-        T0 val0 = CustomConverter.Convert<T0>(splits[0]);
-        T1 val1 = CustomConverter.Convert<T1>(splits[1]);
-        T2 val2 = CustomConverter.Convert<T2>(splits[2]);
-        T3 val3 = CustomConverter.Convert<T3>(splits[3]);
-        T4 val4 = CustomConverter.Convert<T4>(splits[4]);
-        T5 val5 = CustomConverter.Convert<T5>(splits[5]);
-        T6 val6 = CustomConverter.Convert<T6>(splits[6]);
-        T7 val7 = CustomConverter.Convert<T7>(splits[7]);
-        T8 val8 = CustomConverter.Convert<T8>(splits[8]);
-        return (val0, val1, val2, val3, val4, val5, val6, val7, val8);
+        return SplitsConverter.ToResults<T0, T1, T2, T3, T4, T5, T6, T7, T8>(splits);
     }
     
     public static (T0, T1, T2, T3, T4, T5, T6, T7, T8, T9) Single<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(string source, string template, int bracketsCount = 1, ParsingOptions? options = null)
@@ -190,18 +154,9 @@ public static partial class Parse
     {
         const int results = 10;
 
-        string[] splits = StringSplitter.Split(source, template, results, bracketsCount, options);
+        var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
+        SplitResult[] splits = stringSplitter.Split();
 
-        T0 val0 = CustomConverter.Convert<T0>(splits[0]);
-        T1 val1 = CustomConverter.Convert<T1>(splits[1]);
-        T2 val2 = CustomConverter.Convert<T2>(splits[2]);
-        T3 val3 = CustomConverter.Convert<T3>(splits[3]);
-        T4 val4 = CustomConverter.Convert<T4>(splits[4]);
-        T5 val5 = CustomConverter.Convert<T5>(splits[5]);
-        T6 val6 = CustomConverter.Convert<T6>(splits[6]);
-        T7 val7 = CustomConverter.Convert<T7>(splits[7]);
-        T8 val8 = CustomConverter.Convert<T8>(splits[8]);
-        T9 val9 = CustomConverter.Convert<T9>(splits[9]);
-        return (val0, val1, val2, val3, val4, val5, val6, val7, val8, val9);
+        return SplitsConverter.ToResults<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(splits);
     }
 }

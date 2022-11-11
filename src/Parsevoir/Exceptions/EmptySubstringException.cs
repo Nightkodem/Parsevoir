@@ -1,5 +1,8 @@
-﻿namespace Parsevoir.Exceptions;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace Parsevoir.Exceptions;
+
+[ExcludeFromCodeCoverage]
 public class EmptySubstringException : Exception
 {
     public string SourceString { get; init; }
