@@ -5,7 +5,11 @@ name: .NET
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+    [ 
+      "main",
+      "devops-setup"
+    ]
   pull_request:
     branches: [ "main" ]
 
