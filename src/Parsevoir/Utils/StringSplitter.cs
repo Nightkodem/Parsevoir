@@ -4,14 +4,15 @@ namespace Parsevoir.Utils;
 
 internal static class StringSplitter
 {
-    private static readonly ParseOptions DefaultParseOptions = new(StringComparison.Ordinal);
-    
-    internal static string[] Split(string source, string template, int resultCount, int bracketsCount = 1, ParseOptions? options = null)
+    private static readonly ParsingOptions DefaultParsingOptions = new(StringComparison.Ordinal);
+
+    internal static string[] Split(string source, string template, int resultCount, int bracketsCount = 1,
+        ParsingOptions? options = null)
     {
         var (open, close) = Brackets.GetOpenAndCloseString(bracketsCount);
 
-        options ??= DefaultParseOptions;
-        
+        options ??= DefaultParsingOptions;
+
         string[] results = new string[resultCount];
 
         int sourceIndex = 0;
@@ -29,31 +30,37 @@ internal static class StringSplitter
         string source, string template,
         ref int sourceIndex, ref int templateIndex,
         string open, string close,
-        ParseOptions parseOptions, out int typeIndex)
+        ParsingOptions parsingOptions, out int typeIndex)
     {
-        var stringComparison = parseOptions.StringComparison;
+        var stringComparison = parsingOptions.StringComparison;
         var (sourceLength, templateLength) = (source.Length, template.Length);
-        if (sourceIndex >= sourceLength || templateIndex >= templateLength)
-            throw new Exception("End of string!");
-        
-        int start = template.IndexOf(open, templateIndex, stringComparison);
-        if (start < 0)
-            throw new OpeningMarkNotFoundException(templateIndex);
-        
-        int end = template.IndexOf(close, templateIndex, stringComparison);
-        if (end < 0)
-            throw new ClosingMarkNotFoundException(templateIndex);
+        if (templateIndex >= templateLength)
+            throw new EndOfTemplateStringException("End of template string!", templateIndex, template);
+        if (sourceIndex >= sourceLength)
+            throw new EndOfSourceStringException("End of source string!", sourceIndex, source);
 
-        string typeIndexSubstring = template.Substring(start + 1, end - start - 1);
+        int bracketsCount = open.Length == close.Length ? open.Length : throw new WeirdException("Open and close brackets length have different sizes!");
+
+        int outerStart = template.IndexOf(open, templateIndex, stringComparison);
+        if (outerStart < 0)
+            throw new OpeningMarkNotFoundException(templateIndex);
+        int innerStart = outerStart + bracketsCount - 1;
+
+        int innerEnd = template.IndexOf(close, templateIndex, stringComparison);
+        if (innerEnd < 0)
+            throw new ClosingMarkNotFoundException(templateIndex);
+        int outerEnd = innerEnd + bracketsCount - 1;
+
+        string typeIndexSubstring = template.Substring(innerStart + 1, innerEnd - innerStart - 1);
         typeIndex = Int32.Parse(typeIndexSubstring);
 
-        int nextStart = template.IndexOf(open, end, stringComparison);
+        int nextStart = template.IndexOf(open, outerEnd, stringComparison);
         if (nextStart < 0) nextStart = template.Length;
 
-        int sourceStartIndex = sourceIndex + (start - templateIndex);
+        int sourceStartIndex = sourceIndex + (outerStart - templateIndex);
         int sourceEndIndex;
-        
-        int afterEnd = end + 1;
+
+        int afterEnd = innerEnd + bracketsCount;
         if (afterEnd < template.Length)
         {
             string followingText = template.Substring(afterEnd, nextStart - afterEnd);
@@ -64,30 +71,16 @@ internal static class StringSplitter
             sourceEndIndex = source.Length;
         }
 
+        if (sourceStartIndex >= sourceLength)
+            throw new EndOfSourceStringException("End of source string!", sourceStartIndex, source);
+
         string resultString = source.Substring(sourceStartIndex, sourceEndIndex - sourceStartIndex);
         if (String.IsNullOrWhiteSpace(resultString))
-            throw new Exception("Result is empty!");
+            throw new EmptySubstringException("Substring is empty!", source, sourceStartIndex, sourceEndIndex);
 
         templateIndex = afterEnd;
         sourceIndex = sourceEndIndex;
-        
+
         return resultString;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
