@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Parsevoir.Exceptions;
 
 namespace Parsevoir.Tests.Parses;
 
@@ -222,5 +223,45 @@ public class ParseSingleTests
         actual7.Should().Be(expected7);
         actual8.Should().Be(expected8);
         actual9.Should().Be(expected9);
+    }
+
+    [Fact]
+    public void ParseSingleInt_WrongOpeningBracketFormat_ThrowsException()
+    {
+        Action act = () => Parse.Single<int>("Liczba 12", "Liczba 0}");
+
+        act.Should().Throw<OpeningMarkNotFoundException>();
+    }
+
+    [Fact]
+    public void ParseSingleInt_WrongClosingBracketFormat_ThrowsException()
+    {
+        Action act = () => Parse.Single<int>("Liczba 12", "Liczba {0");
+
+        act.Should().Throw<ClosingMarkNotFoundException>();
+    }
+
+    [Fact]
+    public void ParseSingleInt_WrongSourceFormat_ThrowsException()
+    {
+        Action act = () => Parse.Single<int>("Liczb", "Liczba {0}");
+
+        act.Should().Throw<EndOfSourceStringException>();
+    }
+
+    [Fact]
+    public void ParseSingleInt_WrongTemplateFormat_ThrowsException()
+    {
+        Action act = () => Parse.Single<int, int>("Liczba 12 i 13", "Liczba {0}");
+
+        act.Should().Throw<EndOfTemplateStringException>();
+    }
+
+    [Fact]
+    public void ParseSingleInt_EmptyResult_ThrowsException()
+    {
+        Action act = () => Parse.Single<int>("Liczba  nie ma liczby", "Liczba {0} nie ma liczby");
+
+        act.Should().Throw<EmptySubstringException>();
     }
 }

@@ -9,12 +9,10 @@ internal static class Brackets
     
     internal static (string open, string close) GetOpenAndCloseString(int bracketsCount)
     {
-        if (bracketsCount < 1) throw new ArgumentException("Value must be larger than 0!", nameof(bracketsCount));
-
         switch (bracketsCount)
         {
             case <= 0:
-                throw new ArgumentException("Value must be larger than 0!", nameof(bracketsCount));
+                throw new ArgumentException("Number of brackets must be larger than 0!", nameof(bracketsCount));
             case 1:
                 return ($"{OpenChar}", $"{CloseChar}");
             case 2:
