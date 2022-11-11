@@ -5,15 +5,17 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Authors>Nightkodem</Authors>
+        
+        <Company>ThunderFlow</Company>
         <Description>Library for extracting simple data from strings using a straightforward interface.</Description>
-        <PackageId>thunderflow.parsevoir</PackageId>
+        <PackageId>Parsevoir</PackageId>
         <Title>Parsevoir</Title>
         <Copyright>GNU General Public License v3.0</Copyright>
-        <PackageLicenseUrl>https://github.com/Nightkodem/Parsevoir/blob/main/LICENSE</PackageLicenseUrl>
+        <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/Nightkodem/Parsevoir</RepositoryUrl>
         <PackageTags>Parser</PackageTags>
-        <PackageReleaseNotes>##1.0.0
-Initial release.</PackageReleaseNotes>
+        <PackageVersion>1.0.2</PackageVersion>
+        <RepositoryType>git</RepositoryType>
     </PropertyGroup>
 
 </Project>
