@@ -1,114 +1,147 @@
-﻿using Parsevoir.Exceptions;
+﻿using System.Globalization;
+using Parsevoir.Exceptions;
 
 namespace Parsevoir.Utils;
 
 internal class StringSplitter
 {
-    private static readonly ParsingOptions DefaultParsingOptions = new(StringComparison.Ordinal);
-
     private readonly string _source;
     private readonly string _template;
-    private readonly int _resultCount;
-    private readonly int _bracketsCount;
+    private readonly int _resultsCount;
     private readonly ParsingOptions _options;
-    
+    private readonly string _openMark;
+    private readonly string _closeMark;
+
     private int _sourceIndex = 0;
     private int _templateIndex = 0;
-    
-    internal StringSplitter(string source, string template, int resultCount)
-        : this(source, template, resultCount, 1, DefaultParsingOptions)
-    { }
-    
-    internal StringSplitter(string source, string template, int resultCount, int bracketsCount)
-        : this(source, template, resultCount, bracketsCount, DefaultParsingOptions)
-    { }
-    
-    internal StringSplitter(string source, string template, int resultCount, ParsingOptions options)
-        : this(source, template, resultCount, 1, options)
-    { }
+    private int? _nextStart = null;
 
-    internal StringSplitter(string source, string template, int resultCount, int bracketsCount,
-        ParsingOptions options)
+    internal StringSplitter(string source, string template, int resultsCount)
+        : this(source, template, resultsCount, 1, ParsingOptions.DefaultParsingOptions)
+    {
+    }
+
+    internal StringSplitter(string source, string template, int resultsCount, int bracketsCount)
+        : this(source, template, resultsCount, bracketsCount, ParsingOptions.DefaultParsingOptions)
+    {
+    }
+
+    internal StringSplitter(string source, string template, int resultsCount, ParsingOptions? options)
+        : this(source, template, resultsCount, 1, options)
+    {
+    }
+
+    internal StringSplitter(string source, string template, int resultsCount, int bracketsCount,
+        ParsingOptions? options)
     {
         _source = source;
         _template = template;
-        _resultCount = resultCount;
-        _bracketsCount = bracketsCount;
-        _options = options;
+        _resultsCount = resultsCount;
+        _options = options ?? ParsingOptions.DefaultParsingOptions;
+        (_openMark, _closeMark) = Brackets.GetOpenAndCloseString(bracketsCount);
     }
 
     internal SplitResult[] Split()
     {
-        var splitResults = new SplitResult[_resultCount];
+        var splitResults = new SplitResult[_resultsCount];
 
-        for (int i = 0; i < _resultCount; i++)
+        for (int i = 0; i < _resultsCount; i++)
         {
-            string value = GetNext(out int typeIndex);
-            var splitResult = new SplitResult(value, typeIndex);
+            string value = GetNext(out int typeNumber);
+            var splitResult = new SplitResult(value, typeNumber);
             splitResults[i] = splitResult;
         }
 
         return splitResults;
     }
 
-    private string GetNext(out int typeIndex)
+    private string GetNext(out int typeNumber)
     {
-        var stringComparison = _options.StringComparison;
-        var (sourceLength, templateLength) = (_source.Length, _template.Length);
-
-        ValidateIndices(_source, _template, _sourceIndex, _templateIndex, templateLength, sourceLength);
-
-        var (open, close) = Brackets.GetOpenAndCloseString(_bracketsCount);
-
-        int outerStart = _template.IndexOf(open, _templateIndex, stringComparison);
-        if (outerStart < 0)
-            throw new OpeningMarkNotFoundException(_templateIndex);
-        int innerStart = outerStart + _bracketsCount - 1;
-
-        int innerEnd = _template.IndexOf(close, _templateIndex, stringComparison);
-        if (innerEnd < 0)
-            throw new ClosingMarkNotFoundException(_templateIndex);
-        int outerEnd = innerEnd + _bracketsCount - 1;
-
-        string typeIndexSubstring = _template.Substring(innerStart + 1, innerEnd - innerStart - 1);
-        typeIndex = Int32.Parse(typeIndexSubstring);
-
-        int nextStart = _template.IndexOf(open, outerEnd, stringComparison);
-        if (nextStart < 0) nextStart = _template.Length;
-
-        int sourceStartIndex = _sourceIndex + (outerStart - _templateIndex);
-        int sourceEndIndex;
-
-        int afterEnd = innerEnd + _bracketsCount;
-        if (afterEnd < _template.Length)
+        bool isSkip = false;
+        while (true)
         {
-            string followingText = _template.Substring(afterEnd, nextStart - afterEnd);
-            sourceEndIndex = _source.IndexOf(followingText, sourceStartIndex, stringComparison);
+            ValidateIndices();
+
+            var (outerStart, start, end, outerEnd) = GetStartAndEnd();
+
+            bool wasSkip = isSkip;
+            isSkip = start == end;
+            if (isSkip)
+            {
+                _templateIndex = outerEnd + 1;
+                _nextStart = null;
+                continue;
+            }
+
+            typeNumber = GetTypeNumber(start, end);
+
+            _nextStart = GetNextStart(outerEnd);
+
+            var (sourceStart, sourceEnd) = GetSourceStartAndEnd(outerStart, outerEnd, _nextStart.Value, wasSkip);
+
+            string resultString = _source.Substring(sourceStart, sourceEnd - sourceStart);
+            if (String.IsNullOrWhiteSpace(resultString))
+                throw new EmptySubstringException("Substring is empty!", _source, sourceStart, sourceEnd);
+
+            _templateIndex = outerEnd + 1;
+            _sourceIndex = sourceEnd;
+
+            return resultString;
         }
-        else
-        {
-            sourceEndIndex = _source.Length;
-        }
-
-        if (sourceStartIndex >= sourceLength)
-            throw new EndOfSourceStringException("End of source string!", sourceStartIndex, _source);
-
-        string resultString = _source.Substring(sourceStartIndex, sourceEndIndex - sourceStartIndex);
-        if (String.IsNullOrWhiteSpace(resultString))
-            throw new EmptySubstringException("Substring is empty!", _source, sourceStartIndex, sourceEndIndex);
-
-        _templateIndex = afterEnd;
-        _sourceIndex = sourceEndIndex;
-
-        return resultString;
     }
 
-    private static void ValidateIndices(string source, string template, int sourceIndex, int templateIndex,
-        int templateLength, int sourceLength)
+    private void ValidateIndices()
     {
-        if (templateIndex >= templateLength)
-            throw new EndOfTemplateStringException("End of template string!", templateIndex, template);
-        if (sourceIndex >= sourceLength)
-            throw new EndOfSourceStringException("End of source string!", sourceIndex, source);
+        if (_templateIndex >= _template.Length)
+            throw new EndOfTemplateStringException("End of template string!", _templateIndex, _template);
+        if (_sourceIndex >= _source.Length)
+            throw new EndOfSourceStringException("End of source string!", _sourceIndex, _source);
+    }
+
+    private (int outerStart, int start, int end, int outerEnd) GetStartAndEnd()
+    {
+        int outerStart = _nextStart ?? _template.IndexOf(_openMark, _templateIndex, _options.StringComparison);
+        if (outerStart < 0)
+            throw new OpeningMarkNotFoundException(_templateIndex);
+        int start = outerStart + _openMark.Length;
+
+        int end = _template.IndexOf(_closeMark, start, _options.StringComparison);
+        if (end < 0)
+            throw new ClosingMarkNotFoundException(start);
+        int outerEnd = end + _closeMark.Length - 1;
+
+        return (outerStart, start, end, outerEnd);
+    }
+
+    private int GetTypeNumber(int start, int end)
+    {
+        string typeIndexSubstring = _template.Substring(start, end - start);
+        int typeIndex = Int32.Parse(typeIndexSubstring, _options.IntegerNumberStyles, _options.NumberFormatInfo);
+        return typeIndex;
+    }
+
+    private (int sourceStart, int sourceEnd) GetSourceStartAndEnd(int outerStart, int outerEnd, int nextStart, bool wasSkip)
+    {
+        int templateStartOffset = outerStart - _templateIndex;
+        int sourceStart = wasSkip
+            ? _source.IndexOfSubstring(_sourceIndex, _template, _templateIndex, outerStart, _options)
+                + templateStartOffset
+            : _sourceIndex + templateStartOffset;
+
+        if (sourceStart >= _source.Length)
+            throw new EndOfSourceStringException("End of source string!", sourceStart, _source);
+
+        bool iseEndOfString = outerEnd + 1 >= _template.Length;
+        int sourceEnd = iseEndOfString
+            ? _source.Length
+            : _source.IndexOfSubstring(sourceStart, _template, outerEnd + 1, nextStart, _options);
+        
+        return (sourceStart, sourceEnd);
+    }
+
+    private int GetNextStart(int outerEnd)
+    {
+        int nextStart = _template.IndexOf(_openMark, outerEnd, _options.StringComparison);
+        return nextStart >= 0 ? nextStart : _template.Length;
     }
 }

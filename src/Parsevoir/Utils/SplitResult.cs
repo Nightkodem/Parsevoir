@@ -3,11 +3,11 @@
 public struct SplitResult
 {
     public string Value { get; init; }
-    public int TypeIndex { get; init; }
+    public int TypeNumber { get; init; }
     
-    public SplitResult(string value, int typeIndex)
+    public SplitResult(string value, int typeNumber)
     {
         Value = value;
-        TypeIndex = typeIndex;
+        TypeNumber = typeNumber;
     }
 }
