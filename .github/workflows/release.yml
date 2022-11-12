@@ -32,4 +32,7 @@ jobs:
       with:
         name: Parsevoir Artifacts Publish
         path: ./Parsevoir/bin/Release/Parsevoir.${{ github.event.release.tag_name }}.nupkg
-      
+        
+    - name: Publish NuGet Package
+      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.GITHUBACTIONS_NUGETAPIKEY_PARSEVOIR }} --source https://api.nuget.org/v3/index.json --no-symbols true
+    
