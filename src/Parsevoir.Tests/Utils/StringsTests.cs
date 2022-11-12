@@ -23,7 +23,8 @@ public class StringsTests
     [InlineData("Jakiś tekst tekst do porównania", 7, "Jakiś {0} teksest do porównania", 10, 15, -1)]
     public void IndexOf_CaseSensitive_Success(string text, int start, string phrase, int phraseStart, int phraseEnd, int expected)
     {
-        int actual = text.IndexOfSubstring(start, phrase, phraseStart, phraseEnd, CaseSensitiveOptions);
+        ReadOnlySpan<char> textAsSpan = text;
+        int actual = textAsSpan.IndexOfSubstring(start, phrase, phraseStart, phraseEnd, CaseSensitiveOptions);
 
         actual.Should().Be(expected);
     }
@@ -34,7 +35,8 @@ public class StringsTests
     [InlineData("Jakiś tekst tekst do porównania", 7, "Jakiś {0} tEkSt do porównania", 10, 15, 12)]
     public void IndexOf_CaseInsensitive_Success(string text, int start, string phrase, int phraseStart, int phraseEnd, int expected)
     {
-        int actual = text.IndexOfSubstring(start, phrase, phraseStart, phraseEnd, CaseInsensitiveOptions);
+        ReadOnlySpan<char> textAsSpan = text;
+        int actual = textAsSpan.IndexOfSubstring(start, phrase, phraseStart, phraseEnd, CaseInsensitiveOptions);
 
         actual.Should().Be(expected);
     }
