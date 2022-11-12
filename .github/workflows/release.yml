@@ -35,5 +35,5 @@ jobs:
         if-no-files-found: error
         
     - name: Publish NuGet Package
-      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.GITHUBACTIONS_NUGETAPIKEY_PARSEVOIR }} --source https://api.nuget.org/v3/index.json --no-symbols true
+      run: dotnet nuget push 'src/**/Parsevoir.${{ github.event.release.tag_name }}.nupkg' --api-key ${{ secrets.GITHUBACTIONS_NUGETAPIKEY_PARSEVOIR }} --source https://api.nuget.org/v3/index.json
     
