@@ -1,5 +1,8 @@
-﻿namespace Parsevoir.Exceptions;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace Parsevoir.Exceptions;
+
+[ExcludeFromCodeCoverage]
 public class MarkNotFoundException : ArgumentException
 {
     protected const string Opening = "Optening";

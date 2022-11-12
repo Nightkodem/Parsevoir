@@ -1,5 +1,8 @@
-﻿namespace Parsevoir.Exceptions;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace Parsevoir.Exceptions;
+
+[ExcludeFromCodeCoverage]
 public class EndOfTemplateStringException : Exception
 {
     public string TemplateString { get; init; }
