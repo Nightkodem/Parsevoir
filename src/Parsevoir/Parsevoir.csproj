@@ -14,7 +14,7 @@
         <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/Nightkodem/Parsevoir</RepositoryUrl>
         <PackageTags>Parser</PackageTags>
-        <PackageVersion>1.0.2</PackageVersion>
+        <PackageVersion>1.1.0</PackageVersion>
         <RepositoryType>git</RepositoryType>
     </PropertyGroup>
 
