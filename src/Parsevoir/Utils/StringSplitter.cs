@@ -122,10 +122,13 @@ internal class StringSplitter
 
     private (int sourceStart, int sourceEnd) GetSourceStartAndEnd(int outerStart, int outerEnd, int nextStart, bool wasSkip)
     {
+        ReadOnlySpan<char> sourceAsSpan = _source;
+        ReadOnlySpan<char> templateAsSpan = _template;
+        
         int templateStartOffset = outerStart - _templateIndex;
         int sourceStart = wasSkip
-            ? _source.IndexOfSubstring(_sourceIndex, _template, _templateIndex, outerStart, _options)
-                + templateStartOffset
+            ? sourceAsSpan.IndexOfSubstring(_sourceIndex, templateAsSpan, _templateIndex, outerStart, _options)
+              + templateStartOffset
             : _sourceIndex + templateStartOffset;
 
         if (sourceStart >= _source.Length)
@@ -134,7 +137,7 @@ internal class StringSplitter
         bool iseEndOfString = outerEnd + 1 >= _template.Length;
         int sourceEnd = iseEndOfString
             ? _source.Length
-            : _source.IndexOfSubstring(sourceStart, _template, outerEnd + 1, nextStart, _options);
+            : sourceAsSpan.IndexOfSubstring(sourceStart, templateAsSpan, outerEnd + 1, nextStart, _options);
         
         return (sourceStart, sourceEnd);
     }

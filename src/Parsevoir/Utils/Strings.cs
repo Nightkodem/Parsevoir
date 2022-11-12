@@ -4,7 +4,7 @@ namespace Parsevoir.Utils;
 
 internal static class Strings
 {
-    internal static int IndexOfSubstring(this string text, int start, string phrase, int phraseStart, int phraseEnd, ParsingOptions options)
+    internal static int IndexOfSubstring(this ReadOnlySpan<char> text, int start, ReadOnlySpan<char> phrase, int phraseStart, int phraseEnd, ParsingOptions options)
     {
         var (textLength, phraseLength) = (text.Length, phrase.Length);
         int phraseSubstrLength = phraseEnd - phraseStart;
@@ -13,8 +13,6 @@ internal static class Strings
         Func<char, char> getChar = options.CaseSensitivity == CaseSensitivity.Sensitive
             ? c => c
             : Char.ToLower;
-
-        var (textArray, phraseArray) = (text.ToCharArray(), phrase.ToCharArray());
         
         int lastTextIndex = textLength - phraseSubstrLength;
 
@@ -23,8 +21,8 @@ internal static class Strings
             bool wasMatch = false;
             for (int j = 0; j < phraseSubstrLength; j++)
             {
-                char textChar = getChar(textArray[i + j]);
-                char phraseChar = getChar(phraseArray[phraseStart + j]);
+                char textChar = getChar(text[i + j]);
+                char phraseChar = getChar(phrase[phraseStart + j]);
 
                 wasMatch = textChar == phraseChar;
                 if (!wasMatch) break;
