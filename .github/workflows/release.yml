@@ -31,7 +31,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Parsevoir Artifacts Publish
-        path: Parsevoir/Parsevoir/src/Parsevoir/bin/Release/Parsevoir.${{ github.event.release.tag_name }}.nupkg
+        path: Parsevoir/src/Parsevoir/bin/Release/Parsevoir.${{ github.event.release.tag_name }}.nupkg
         if-no-files-found: error
         
     - name: Publish NuGet Package
