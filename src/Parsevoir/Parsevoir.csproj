@@ -17,13 +17,25 @@
         <PackageVersion>1.1.0</PackageVersion>
         <RepositoryType>git</RepositoryType>
         <LangVersion>latest</LangVersion>
+        
         <NeutralLanguage>en</NeutralLanguage>
+        <AssemblyVersion>1.1.0.0</AssemblyVersion>
+        
+        <SignAssembly>true</SignAssembly>
+        <PublicSign>true</PublicSign>
+        <AssemblyOriginatorKeyFile>Parsevoir.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
     
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-            <_Parameter1>Parsevoir.Tests</_Parameter1>
+            <_Parameter1>Parsevoir.Tests, PublicKey=00240000048000001401000006020000002400005253413100080000010001003b2dcc87e37038fe8c6760b45491884026d447f1cf52e29d2cfded8b59c0ce8354ae180707ae78a3eba8f09f7458225a9daebf9e15c20d1d37973d55d2936769be8f10e6d263e05db3a67d13610fa85f80146a8d482a8ef861924a8715359058e0c03478015beba24b4b581a450df0c65fc98ef3953aa5441e008bf0dc2180c05f55f6c88f31382c7d9298f901e313a3fc866be92ecafe2e1519ea0cf033748c4600adbca289e8512af19ba52d931fc029cb80a36672434a81356c01edb736b61f0f5984f22d32b7f4af25cb3c4d5abdbc9b8a2bfd6489a207253290102c352de2300b11bc0145e6727d071f562d1c5b02f952ce542fb5d1399b499967178ca2</_Parameter1>
         </AssemblyAttribute>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Include="..\Parsevoir.snk">
+        <Link>ProjectItems\Parsevoir.snk</Link>
+      </None>
     </ItemGroup>
 
 </Project>

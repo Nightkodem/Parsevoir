@@ -6,6 +6,12 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
+        <AssemblyVersion>1.1.0.0</AssemblyVersion>
+        <NeutralLanguage>en</NeutralLanguage>
+
+        <SignAssembly>true</SignAssembly>
+        <PublicSign>true</PublicSign>
+        <AssemblyOriginatorKeyFile>ParsevoirTests.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>
