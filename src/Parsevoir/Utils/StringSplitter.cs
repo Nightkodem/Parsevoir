@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿using System;
 using Parsevoir.Exceptions;
 
 namespace Parsevoir.Utils;
@@ -38,7 +38,14 @@ internal class StringSplitter
         _template = template;
         _resultsCount = resultsCount;
         _options = options ?? ParsingOptions.DefaultParsingOptions;
+        
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+        var brackets = Brackets.GetOpenAndCloseString(bracketsCount);
+        _openMark = brackets.Item1;
+        _closeMark = brackets.Item2;
+#else
         (_openMark, _closeMark) = Brackets.GetOpenAndCloseString(bracketsCount);
+#endif
     }
 
     internal SplitResult[] Split()
@@ -62,7 +69,15 @@ internal class StringSplitter
         {
             ValidateIndices();
 
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+            var startsAndEnds = GetStartAndEnd();
+            int outerStart = startsAndEnds.Item1;
+            int start = startsAndEnds.Item2;
+            int end = startsAndEnds.Item3;
+            int outerEnd = startsAndEnds.Item4;
+#else
             var (outerStart, start, end, outerEnd) = GetStartAndEnd();
+#endif
 
             bool wasSkip = isSkip;
             isSkip = start == end;
@@ -77,7 +92,13 @@ internal class StringSplitter
 
             _nextStart = GetNextStart(outerEnd);
 
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+            var sourceStartAndEnd = GetSourceStartAndEnd(outerStart, outerEnd, _nextStart.Value, wasSkip);
+            int sourceStart = sourceStartAndEnd.Item1;
+            int sourceEnd = sourceStartAndEnd.Item2;
+#else
             var (sourceStart, sourceEnd) = GetSourceStartAndEnd(outerStart, outerEnd, _nextStart.Value, wasSkip);
+#endif
 
             string resultString = _source.Substring(sourceStart, sourceEnd - sourceStart);
             if (String.IsNullOrWhiteSpace(resultString))
@@ -98,7 +119,11 @@ internal class StringSplitter
             throw new EndOfSourceStringException("End of source string!", _sourceIndex, _source);
     }
 
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+    private Tuple<int, int, int, int> GetStartAndEnd()
+#else
     private (int outerStart, int start, int end, int outerEnd) GetStartAndEnd()
+#endif
     {
         int outerStart = _nextStart ?? _template.IndexOf(_openMark, _templateIndex, _options.StringComparison);
         if (outerStart < 0)
@@ -110,7 +135,11 @@ internal class StringSplitter
             throw new ClosingMarkNotFoundException(start);
         int outerEnd = end + _closeMark.Length - 1;
 
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+        return new Tuple<int, int, int, int>(outerStart, start, end, outerEnd);
+#else
         return (outerStart, start, end, outerEnd);
+#endif
     }
 
     private int GetTypeNumber(int start, int end)
@@ -120,10 +149,19 @@ internal class StringSplitter
         return typeIndex;
     }
 
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+    private Tuple<int, int> GetSourceStartAndEnd(int outerStart, int outerEnd, int nextStart, bool wasSkip)
+#else
     private (int sourceStart, int sourceEnd) GetSourceStartAndEnd(int outerStart, int outerEnd, int nextStart, bool wasSkip)
+#endif
     {
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452 || NET461 || NET462 || NET47 || NET471 || NET472 || NET48
+        string sourceAsSpan = _source;
+        string templateAsSpan = _template;
+#else
         ReadOnlySpan<char> sourceAsSpan = _source;
         ReadOnlySpan<char> templateAsSpan = _template;
+#endif
         
         int templateStartOffset = outerStart - _templateIndex;
         int sourceStart = wasSkip
@@ -139,7 +177,11 @@ internal class StringSplitter
             ? _source.Length
             : sourceAsSpan.IndexOfSubstring(sourceStart, templateAsSpan, outerEnd + 1, nextStart, _options);
         
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+        return new Tuple<int, int>(sourceStart, sourceEnd);
+#else
         return (sourceStart, sourceEnd);
+#endif
     }
 
     private int GetNextStart(int outerEnd)

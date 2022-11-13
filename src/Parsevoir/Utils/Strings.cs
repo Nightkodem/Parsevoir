@@ -5,14 +5,15 @@ namespace Parsevoir.Utils;
 internal static class Strings
 {
     internal static int IndexOfSubstring(
-#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452 || NET6 || NET461 || NET462 || NET47 || NET471 || NET472 || NET48
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452 || NET461 || NET462 || NET47 || NET471 || NET472 || NET48
         this string text, int start, string phrase,
 #else
         this ReadOnlySpan<char> text, int start, ReadOnlySpan<char> phrase,
 #endif
             int phraseStart, int phraseEnd, ParsingOptions options)
     {
-        var (textLength, phraseLength) = (text.Length, phrase.Length);
+        var textLength = text.Length;
+        var phraseLength = phrase.Length;
         int phraseSubstrLength = phraseEnd - phraseStart;
         ValidateStrings(textLength, start, phraseLength, phraseEnd, phraseSubstrLength);
 

@@ -25,15 +25,15 @@ jobs:
         dotnet-version: 6.0.x
         
     - name: Create NuGet Package
-      run: dotnet pack -c Release /p:Version=${{ github.event.release.tag_name }} /p:PackageReleaseNotes="See https://github.com/Nightkodem/Parsevoir/releases/tag/${{ github.event.release.tag_name }}"
+      run: dotnet pack -c Release /p:Version=${{github.event.release.tag_name}} /p:PackageReleaseNotes="See https://github.com/Nightkodem/Parsevoir/releases/tag/${{ ithub.event.release.tag_name}}"
       
     - name: Publish Artifacts
       uses: actions/upload-artifact@v3
       with:
         name: Parsevoir Artifacts Publish
-        path: /home/runner/work/Parsevoir/Parsevoir/src/Parsevoir/bin/Release/Parsevoir.${{ github.event.release.tag_name }}.nupkg
+        path: /home/runner/work/Parsevoir/Parsevoir/src/Parsevoir/bin/Release/Parsevoir.${{github.event.release.tag_name}}.nupkg
         if-no-files-found: error
         
     - name: Publish NuGet Package
-      run: dotnet nuget push 'src/**/Parsevoir.${{ github.event.release.tag_name }}.nupkg' --api-key ${{ secrets.GITHUBACTIONS_NUGETAPIKEY_PARSEVOIR }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push 'src/**/Parsevoir.${{github.event.release.tag_name}}.nupkg' --api-key ${{secrets.GITHUBACTIONS_NUGETAPIKEY_PARSEVOIR}} --source https://api.nuget.org/v3/index.json
     
