@@ -1,4 +1,7 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using Parsevoir.Collections;
 using Parsevoir.Exceptions;
 
 namespace Parsevoir.Utils;
@@ -31,8 +34,7 @@ internal class StringSplitter
     {
     }
 
-    internal StringSplitter(string source, string template, int resultsCount, int bracketsCount,
-        ParsingOptions? options)
+    internal StringSplitter(string source, string template, int resultsCount, int bracketsCount, ParsingOptions? options)
     {
         _source = source;
         _template = template;
@@ -41,21 +43,59 @@ internal class StringSplitter
         (_openMark, _closeMark) = Brackets.GetOpenAndCloseString(bracketsCount);
     }
 
-    internal SplitResult[] Split()
+    internal IReadOnlyDictionary<int, string[]> SplitMany()
     {
-        var splitResults = new SplitResult[_resultsCount];
+        var typesToSplitsCollection = new Dictionary<int, LinkedCollection<string>>();
+
+        bool last = false;
+        while (!last)
+        {
+            string value = GetNext(out int typeNumber, out last);
+
+            if (typesToSplitsCollection.TryGetValue(typeNumber, out var splitsCollection))
+            {
+                splitsCollection.Add(value);
+            }
+            else
+            {
+                var newSplitsCollection = new LinkedCollection<string>();
+                newSplitsCollection.Add(value);
+                typesToSplitsCollection.Add(typeNumber, newSplitsCollection);
+            }
+        }
+        
+        var typesToSplits = new Dictionary<int, string[]>(typesToSplitsCollection.Count);
+
+        foreach (var typeSplitPair in typesToSplitsCollection)
+        {
+            int typeNumber = typeSplitPair.Key;
+            LinkedCollection<string>? splitCollection = typeSplitPair.Value;
+            
+            typesToSplits.Add(typeNumber, splitCollection.ToArray());
+        }
+
+        return typesToSplits;
+    }
+
+    internal string[] SplitSingles()
+    {
+        var splits = new string[_resultsCount];
 
         for (int i = 0; i < _resultsCount; i++)
         {
-            string value = GetNext(out int typeNumber);
-            var splitResult = new SplitResult(value, typeNumber);
-            splitResults[i] = splitResult;
+            string value = GetNext();
+            splits[i] = value;
         }
 
-        return splitResults;
+        return splits;
     }
 
-    private string GetNext(out int typeNumber)
+    private string GetNext()
+    {
+        return GetNext(out _, out _);
+    }
+
+    private string GetNext(out int typeNumber, out bool last)
     {
         bool isSkip = false;
         while (true)
@@ -86,6 +126,7 @@ internal class StringSplitter
             _templateIndex = outerEnd + 1;
             _sourceIndex = sourceEnd;
 
+            last = _nextStart.Value == _template.Length;
             return resultString;
         }
     }
@@ -122,8 +163,13 @@ internal class StringSplitter
 
     private (int sourceStart, int sourceEnd) GetSourceStartAndEnd(int outerStart, int outerEnd, int nextStart, bool wasSkip)
     {
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452 || NET6 || NET461 || NET462 || NET47 || NET471 || NET472 || NET48
+        string sourceAsSpan = _source;
+        string templateAsSpan = _template;
+#else
         ReadOnlySpan<char> sourceAsSpan = _source;
         ReadOnlySpan<char> templateAsSpan = _template;
+#endif
         
         int templateStartOffset = outerStart - _templateIndex;
         int sourceStart = wasSkip

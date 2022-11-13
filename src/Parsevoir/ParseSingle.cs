@@ -1,4 +1,5 @@
-﻿using Parsevoir.Converters;
+﻿using System;
+using Parsevoir.Converters;
 using Parsevoir.Utils;
 
 namespace Parsevoir;
@@ -11,10 +12,10 @@ public static partial class Parse
         const int results = 1;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount, options);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
 
 
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T>(splits);
     }
 
@@ -26,9 +27,9 @@ public static partial class Parse
         const int results = 2;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
 
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1>(splits);
     }
 
@@ -41,9 +42,9 @@ public static partial class Parse
         const int results = 3;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
         
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1, T2>(splits);
     }
 
@@ -57,9 +58,9 @@ public static partial class Parse
         const int results = 4;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
 
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1, T2, T3>(splits);
     }
 
@@ -74,9 +75,9 @@ public static partial class Parse
         const int results = 5;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
 
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1, T2, T3, T4>(splits);
     }
 
@@ -92,9 +93,9 @@ public static partial class Parse
         const int results = 6;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
 
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1, T2, T3, T4, T5>(splits);
     }
 
@@ -111,9 +112,9 @@ public static partial class Parse
         const int results = 7;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
 
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1, T2, T3, T4, T5, T6>(splits);
     }
 
@@ -131,9 +132,9 @@ public static partial class Parse
         const int results = 8;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
 
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1, T2, T3, T4, T5, T6, T7>(splits);
     }
 
@@ -152,9 +153,9 @@ public static partial class Parse
         const int results = 9;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
 
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1, T2, T3, T4, T5, T6, T7, T8>(splits);
     }
 
@@ -174,9 +175,9 @@ public static partial class Parse
         const int results = 10;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
 
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(splits);
     }
 }

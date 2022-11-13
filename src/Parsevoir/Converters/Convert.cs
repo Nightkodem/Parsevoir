@@ -1,6 +1,10 @@
-﻿namespace Parsevoir.Converters;
+﻿using System;
+using System.Collections.Generic;
+using Parsevoir.Utils;
 
-internal static class Convert
+namespace Parsevoir.Converters;
+
+internal class Convert
 {
     private static readonly IReadOnlyDictionary<Type, TypeCode> TypeCodes = new Dictionary<Type, TypeCode>
     {
@@ -21,31 +25,59 @@ internal static class Convert
         { typeof(string), TypeCode.String },
     };
 
-    internal static T To<T>(string text, ParsingOptions options)
+    private readonly ParsingOptions _options;
+
+    public Convert(ParsingOptions options)
     {
-        object value = ToObjectOf<T>(text, options);
+        _options = options;
+    }
+
+    internal T[] To<T>(IReadOnlyDictionary<int, string[]> typesToSplits, int typeNumber)
+    {
+        return typesToSplits.TryGetValue(typeNumber, out var splits)
+            ? To<T>(splits)
+            : Array.Empty<T>();
+    }
+
+    internal T[] To<T>(string[] splits)
+    {
+        int length = splits.Length;
+        T[] values = new T[length];
+        
+        TypeCode typeCode = TypeCodes[typeof(T)];
+        for (int i = 0; i < length; i++)
+        {
+            values[i] = To<T>(splits[i], typeCode);
+        }
+
+        return values;
+    }
+
+    internal T To<T>(string split, TypeCode? typeCode = null)
+    {
+        object value = ToObjectOf<T>(split, typeCode);
         return (T)value;
     }
 
-    internal static object ToObjectOf<T>(string text, ParsingOptions options)
+    internal object ToObjectOf<T>(string text, TypeCode? typeCode = null)
     {
-        TypeCode typeCode = TypeCodes[typeof(T)];
+        typeCode ??= TypeCodes[typeof(T)];
 
         return typeCode switch
         {
             TypeCode.Boolean => Boolean.Parse(text),
             TypeCode.Char => Char.Parse(text),
-            TypeCode.SByte => SByte.Parse(text, options.IntegerNumberStyles, options.NumberFormatInfo),
-            TypeCode.Byte => Byte.Parse(text, options.IntegerNumberStyles, options.NumberFormatInfo),
-            TypeCode.Int16 => Int16.Parse(text, options.IntegerNumberStyles, options.NumberFormatInfo),
-            TypeCode.UInt16 => UInt16.Parse(text, options.IntegerNumberStyles, options.NumberFormatInfo),
-            TypeCode.Int32 => Int32.Parse(text, options.IntegerNumberStyles, options.NumberFormatInfo),
-            TypeCode.UInt32 => UInt32.Parse(text, options.IntegerNumberStyles, options.NumberFormatInfo),
-            TypeCode.Int64 => Int64.Parse(text, options.IntegerNumberStyles, options.NumberFormatInfo),
-            TypeCode.UInt64 => UInt64.Parse(text, options.IntegerNumberStyles, options.NumberFormatInfo),
-            TypeCode.Single => Single.Parse(text, options.FloatingNumberStyles, options.NumberFormatInfo),
-            TypeCode.Double => Double.Parse(text, options.FloatingNumberStyles, options.NumberFormatInfo),
-            TypeCode.Decimal => Decimal.Parse(text, options.FloatingNumberStyles, options.NumberFormatInfo),
+            TypeCode.SByte => SByte.Parse(text, _options.IntegerNumberStyles, _options.NumberFormatInfo),
+            TypeCode.Byte => Byte.Parse(text, _options.IntegerNumberStyles, _options.NumberFormatInfo),
+            TypeCode.Int16 => Int16.Parse(text, _options.IntegerNumberStyles, _options.NumberFormatInfo),
+            TypeCode.UInt16 => UInt16.Parse(text, _options.IntegerNumberStyles, _options.NumberFormatInfo),
+            TypeCode.Int32 => Int32.Parse(text, _options.IntegerNumberStyles, _options.NumberFormatInfo),
+            TypeCode.UInt32 => UInt32.Parse(text, _options.IntegerNumberStyles, _options.NumberFormatInfo),
+            TypeCode.Int64 => Int64.Parse(text, _options.IntegerNumberStyles, _options.NumberFormatInfo),
+            TypeCode.UInt64 => UInt64.Parse(text, _options.IntegerNumberStyles, _options.NumberFormatInfo),
+            TypeCode.Single => Single.Parse(text, _options.FloatingNumberStyles, _options.NumberFormatInfo),
+            TypeCode.Double => Double.Parse(text, _options.FloatingNumberStyles, _options.NumberFormatInfo),
+            TypeCode.Decimal => Decimal.Parse(text, _options.FloatingNumberStyles, _options.NumberFormatInfo),
             TypeCode.DateTime => DateTime.Parse(text),
             TypeCode.String => text,
             _ => throw new ArgumentOutOfRangeException(nameof(typeCode), $"Invalid type passed! Type: {typeof(T).FullName}")
