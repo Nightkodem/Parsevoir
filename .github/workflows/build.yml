@@ -25,10 +25,10 @@ jobs:
           - windows-latest
         version:
           - 6.0.x
-          - 4.7.*
-          - 4.5.*
-          - 3.1.*
-          - 2.1.*
+          - 4.7.x
+          - 4.5.x
+          - 3.1.x
+          - 2.1.x
 
     runs-on: ${{matrix.os}}
     
