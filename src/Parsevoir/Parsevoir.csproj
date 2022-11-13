@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
+        <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Authors>Nightkodem</Authors>
         
@@ -14,9 +13,9 @@
         <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/Nightkodem/Parsevoir</RepositoryUrl>
         <PackageTags>Parser</PackageTags>
-        <PackageVersion>1.1.2</PackageVersion>
+        <PackageVersion>1.1.3</PackageVersion>
         <RepositoryType>git</RepositoryType>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>10</LangVersion>
         
         <NeutralLanguage>en</NeutralLanguage>
         <AssemblyVersion>1.1.0.0</AssemblyVersion>
@@ -24,6 +23,7 @@
         <SignAssembly>true</SignAssembly>
         <PublicSign>true</PublicSign>
         <AssemblyOriginatorKeyFile>Parsevoir.snk</AssemblyOriginatorKeyFile>
+        <TargetFrameworks>net471;net472;net48;net6.0;netcoreapp3.1</TargetFrameworks>
     </PropertyGroup>
     
     <ItemGroup>

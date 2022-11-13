@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace Parsevoir.Utils;
 
@@ -7,6 +8,7 @@ internal static class Brackets
     private const char OpenChar = '{';
     private const char CloseChar = '}';
 
+    
     private static readonly (string, string) OneBracket = ($"{OpenChar}", $"{CloseChar}");
     private static readonly (string, string) TwoBrackets = ($"{OpenChar}{OpenChar}", $"{CloseChar}{CloseChar}");
     private static readonly (string, string) ThreeBrackets = ($"{OpenChar}{OpenChar}{OpenChar}", $"{CloseChar}{CloseChar}{CloseChar}");
