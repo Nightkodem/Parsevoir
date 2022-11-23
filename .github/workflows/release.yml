@@ -9,8 +9,8 @@ on:
       - published
 
 jobs:
+  
   build:
-
     runs-on: ubuntu-latest
     
     defaults:
@@ -18,14 +18,18 @@ jobs:
         working-directory: ./src/
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository 
+      uses: actions/checkout@v3
+      
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
         
     - name: Create NuGet Package
-      run: dotnet pack -c Release /p:Version=${{github.event.release.tag_name}} /p:PackageReleaseNotes="See https://github.com/Nightkodem/Parsevoir/releases/tag/${{ ithub.event.release.tag_name}}"
+      run: dotnet pack -c Release /p:Version=$TAG_NAME /p:PackageReleaseNotes="See https://github.com/Nightkodem/Parsevoir/releases/tag/$TAG_NAME"
+      env:
+        TAG_NAME: ${{ github.event.release.tag_name }}
       
     - name: Publish Artifacts
       uses: actions/upload-artifact@v3
@@ -33,7 +37,12 @@ jobs:
         name: Parsevoir Artifacts Publish
         path: /home/runner/work/Parsevoir/Parsevoir/src/Parsevoir/bin/Release/Parsevoir.${{github.event.release.tag_name}}.nupkg
         if-no-files-found: error
+      env:
+        TAG_NAME: ${{ github.event.release.tag_name }}
         
     - name: Publish NuGet Package
-      run: dotnet nuget push 'src/**/Parsevoir.${{github.event.release.tag_name}}.nupkg' --api-key ${{secrets.GITHUBACTIONS_NUGETAPIKEY_PARSEVOIR}} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push 'src/**/Parsevoir.$TAG_NAME.nupkg' --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
+      env:
+        TAG_NAME: ${{ github.event.release.tag_name }}
+        NUGET_API_KEY: ${{ secrets.GITHUBACTIONS_NUGETAPIKEY_PARSEVOIR }}
     
