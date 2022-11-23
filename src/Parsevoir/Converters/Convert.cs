@@ -1,4 +1,7 @@
-﻿namespace Parsevoir.Converters;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Parsevoir.Converters;
 
 internal static class Convert
 {

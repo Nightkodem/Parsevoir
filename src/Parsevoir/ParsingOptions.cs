@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 
 namespace Parsevoir;
 
@@ -15,6 +16,14 @@ public class ParsingOptions
 
     public ParsingOptions()
     {
+        StringComparison = CaseSensitivity == CaseSensitivity.Sensitive
+            ? StringComparison.Ordinal
+            : StringComparison.OrdinalIgnoreCase;
+    }
+    
+    internal ParsingOptions(CaseSensitivity caseSensitivity)
+    {
+        CaseSensitivity = caseSensitivity;
         StringComparison = CaseSensitivity == CaseSensitivity.Sensitive
             ? StringComparison.Ordinal
             : StringComparison.OrdinalIgnoreCase;
