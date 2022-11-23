@@ -12,7 +12,7 @@ namespace Parsevoir.Tests.Parses
         [InlineData("Liczba 1 to jest bardzo ciekawa liczba, z 2 powodów.", "Liczba {0} to {} z {1} powodów.", 1, 2)]
         public void ParseTwoInts_WithSkip_Success(string source, string template, int expected0, int expected1)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+#if NETSTANDARD2_0 || NETSTANDARD2_1
             var actuals = Parse.Single<int, int>(source, template);
             var actual0 = actuals.Item1;
             var actual1 = actuals.Item2;
@@ -34,7 +34,7 @@ namespace Parsevoir.Tests.Parses
             int expected3,
             int expected4)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+#if NETSTANDARD2_0 || NETSTANDARD2_1
             var (actual0, actual1, actual2, actual3, actual4) =
                 Parse.Single<int, int, int, int, int>(source, template);
 #else

@@ -13,19 +13,19 @@
         <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/Nightkodem/Parsevoir</RepositoryUrl>
         <PackageTags>Parser</PackageTags>
-        <PackageVersion>1.1.3</PackageVersion>
+        <PackageVersion>1.1.4</PackageVersion>
         <RepositoryType>git</RepositoryType>
-        <LangVersion>10</LangVersion>
+        <LangVersion>latestmajor</LangVersion>
         
         <NeutralLanguage>en</NeutralLanguage>
-        <AssemblyVersion>1.1.3.0</AssemblyVersion>
+        <AssemblyVersion>1.1.4.0</AssemblyVersion>
         
         <SignAssembly>true</SignAssembly>
         <PublicSign>true</PublicSign>
         <AssemblyOriginatorKeyFile>Parsevoir.snk</AssemblyOriginatorKeyFile>
-        <TargetFrameworks>net452;net471;net472;net48;net6.0;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net471;net472;net48;net6.0;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
         <PackageLicenseUrl>https://github.com/Nightkodem/Parsevoir/blob/main/LICENSE</PackageLicenseUrl>
-        <PackageReleaseNotes>- Added ParseMany functionality</PackageReleaseNotes>
+        <PackageReleaseNotes>- Added support for multiple frameworks (.NET standard, .NET framework, .NET Core)</PackageReleaseNotes>
     </PropertyGroup>
     
     <ItemGroup>

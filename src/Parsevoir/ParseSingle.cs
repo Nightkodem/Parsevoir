@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using Parsevoir.Converters;
 using Parsevoir.Utils;
 
@@ -19,8 +21,8 @@ public static partial class Parse
         return splitsConverter.ToResults<T>(splits);
     }
 
-#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
-    
+#if NETSTANDARD2_0 || NETSTANDARD2_1
+
     public static Tuple<T0, T1> Single<T0, T1>(string source, string template, int bracketsCount = 1,
         ParsingOptions? options = null)
         where T0 : IConvertible
@@ -29,9 +31,9 @@ public static partial class Parse
         const int results = 2;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
 
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1>(splits);
     }
 
@@ -44,9 +46,9 @@ public static partial class Parse
         const int results = 3;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
-        
-        var splitsConverter = new SplitsConverter(options);
+        var splits = stringSplitter.SplitSingles();
+
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1, T2>(splits);
     }
 
@@ -60,13 +62,14 @@ public static partial class Parse
         const int results = 4;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
 
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1, T2, T3>(splits);
     }
 
-    public static Tuple<T0, T1, T2, T3, T4> Single<T0, T1, T2, T3, T4>(string source, string template, int bracketsCount = 1,
+    public static Tuple<T0, T1, T2, T3, T4> Single<T0, T1, T2, T3, T4>(string source, string template,
+        int bracketsCount = 1,
         ParsingOptions? options = null)
         where T0 : IConvertible
         where T1 : IConvertible
@@ -77,9 +80,9 @@ public static partial class Parse
         const int results = 5;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
 
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1, T2, T3, T4>(splits);
     }
 
@@ -95,9 +98,9 @@ public static partial class Parse
         const int results = 6;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
 
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1, T2, T3, T4, T5>(splits);
     }
 
@@ -114,32 +117,12 @@ public static partial class Parse
         const int results = 7;
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
+        var splits = stringSplitter.SplitSingles();
 
-        var splitsConverter = new SplitsConverter(options);
+        var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T0, T1, T2, T3, T4, T5, T6>(splits);
     }
 
-    public static Tuple<T0, T1, T2, T3, T4, T5, T6, T7> Single<T0, T1, T2, T3, T4, T5, T6, T7>(string source,
-        string template, int bracketsCount = 1, ParsingOptions? options = null)
-        where T0 : IConvertible
-        where T1 : IConvertible
-        where T2 : IConvertible
-        where T3 : IConvertible
-        where T4 : IConvertible
-        where T5 : IConvertible
-        where T6 : IConvertible
-        where T7 : IConvertible
-    {
-        const int results = 8;
-
-        var stringSplitter = new StringSplitter(source, template, results, bracketsCount);
-        var splits = stringSplitter.Split();
-
-        var splitsConverter = new SplitsConverter(options);
-        return splitsConverter.ToResults<T0, T1, T2, T3, T4, T5, T6, T7>(splits);
-    }
-    
 #else
 
     public static (T0, T1) Single<T0, T1>(string source, string template, int bracketsCount = 1,

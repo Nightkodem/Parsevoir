@@ -18,7 +18,7 @@ namespace Parsevoir.Tests.Utils
         [InlineData("Jakiś tekst tekst do porównania", 7, "Jakiś {0} teksest do porównania", 10, 15, -1)]
         public void IndexOf_CaseSensitive_Success(string text, int start, string phrase, int phraseStart, int phraseEnd, int expected)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452 || NET461 || NET462 || NET47 || NET471 || NET472 || NET48
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET461 || NET462 || NET47 || NET471 || NET472 || NET48
             string textAsSpan = text;
 #else
             ReadOnlySpan<char> textAsSpan = text;
@@ -35,7 +35,7 @@ namespace Parsevoir.Tests.Utils
         [InlineData("Jakiś tekst tekst do porównania", 7, "Jakiś {0} tEkSt do porównania", 10, 15, 12)]
         public void IndexOf_CaseInsensitive_Success(string text, int start, string phrase, int phraseStart, int phraseEnd, int expected)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452 || NET461 || NET462 || NET47 || NET471 || NET472 || NET48
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET461 || NET462 || NET47 || NET471 || NET472 || NET48
             string textAsSpan = text;
 #else
             ReadOnlySpan<char> textAsSpan = text;

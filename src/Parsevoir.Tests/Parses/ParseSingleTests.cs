@@ -31,7 +31,7 @@ namespace Parsevoir.Tests.Parses
             int expected0,
             int expected1)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+#if NETSTANDARD2_0 || NETSTANDARD2_1
             var (actual0, actual1) = Parse.Single<int, int>(source, template);
 #else
             var (actual0, actual1) = Parse.Single<int, int>(source, template);
@@ -51,7 +51,7 @@ namespace Parsevoir.Tests.Parses
             int expected1,
             int expected2)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+#if NETSTANDARD2_0 || NETSTANDARD2_1
             var (actual0, actual1, actual2) = Parse.Single<int, int, int>(source, template);
 #else
             var (actual0, actual1, actual2) = Parse.Single<int, int, int>(source, template);
@@ -72,7 +72,7 @@ namespace Parsevoir.Tests.Parses
             int expected2,
             int expected3)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+#if NETSTANDARD2_0 || NETSTANDARD2_1
             var (actual0, actual1, actual2, actual3) = Parse.Single<int, int, int, int>(source, template);
 #else
             var (actual0, actual1, actual2, actual3) = Parse.Single<int, int, int, int>(source, template);
@@ -95,7 +95,7 @@ namespace Parsevoir.Tests.Parses
             int expected3,
             int expected4)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+#if NETSTANDARD2_0 || NETSTANDARD2_1
             var (actual0, actual1, actual2, actual3, actual4) = Parse.Single<int, int, int, int, int>(source, template);
 #else
             var (actual0, actual1, actual2, actual3, actual4) = Parse.Single<int, int, int, int, int>(source, template);
@@ -120,7 +120,7 @@ namespace Parsevoir.Tests.Parses
             int expected4,
             int expected5)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+#if NETSTANDARD2_0 || NETSTANDARD2_1
             var (actual0, actual1, actual2, actual3, actual4, actual5) =
                 Parse.Single<int, int, int, int, int, int>(source, template);
 #else
@@ -149,7 +149,7 @@ namespace Parsevoir.Tests.Parses
             int expected5,
             int expected6)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452
+#if NETSTANDARD2_0 || NETSTANDARD2_1
             var (actual0, actual1, actual2, actual3, actual4, actual5, actual6) =
                 Parse.Single<int, int, int, int, int, int, int>(source, template);
 #else
@@ -166,7 +166,7 @@ namespace Parsevoir.Tests.Parses
             actual6.Should().Be(expected6);
         }
 
-#if !(NETSTANDARD2_0 || NETSTANDARD2_1 || NET45 || NET451 || NET452)
+#if !(NETSTANDARD2_0 || NETSTANDARD2_1)
         
         [Theory]
         [InlineData("1 2 3 4 5 6 7 8", "{0} {1} {2} {3} {4} {5} {6} {7}", 1, 2, 3, 4, 5, 6, 7, 8)]
