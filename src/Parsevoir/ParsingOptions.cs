@@ -20,6 +20,14 @@ public class ParsingOptions
             ? StringComparison.Ordinal
             : StringComparison.OrdinalIgnoreCase;
     }
+    
+    internal ParsingOptions(CaseSensitivity caseSensitivity)
+    {
+        CaseSensitivity = caseSensitivity;
+        StringComparison = CaseSensitivity == CaseSensitivity.Sensitive
+            ? StringComparison.Ordinal
+            : StringComparison.OrdinalIgnoreCase;
+    }
 
     public void Deconstruct(
         out CaseSensitivity caseSensitivity,
