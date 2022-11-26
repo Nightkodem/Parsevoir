@@ -20,7 +20,7 @@ internal class SingleSplitsConverter
         return val;
     }
     
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
     
     internal Tuple<T0, T1> ToResults<T0, T1>(IReadOnlyList<string> splits)
     {

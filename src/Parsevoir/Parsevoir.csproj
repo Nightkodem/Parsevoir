@@ -23,7 +23,7 @@
         <SignAssembly>true</SignAssembly>
         <PublicSign>true</PublicSign>
         <AssemblyOriginatorKeyFile>Parsevoir.snk</AssemblyOriginatorKeyFile>
-        <TargetFrameworks>net471;net472;net48;net6.0;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net452;net471;net472;net48;net6.0;netcoreapp3.1;netstandard2.0;netstandard2.1</TargetFrameworks>
         <PackageLicenseUrl>https://github.com/Nightkodem/Parsevoir/blob/main/LICENSE</PackageLicenseUrl>
         <PackageReleaseNotes>- Added support for multiple frameworks (.NET standard, .NET framework, .NET Core)
 - Added ParseMany functionality</PackageReleaseNotes>

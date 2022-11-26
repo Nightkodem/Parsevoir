@@ -1,14 +1,14 @@
 using System;
 using FluentAssertions;
-using Xunit;
+using NUnit.Framework;
 
 namespace Parsevoir.Tests.Parses
 {
     public class ParseManyTests
     {
         [Theory]
-        [InlineData("1 2 3", "{0} {0} {0}", 1, 2, 3)]
-        [InlineData("Magda ma 12 lat, Bartek 7, a Dumbledore 623", "Magda ma {0} lat, Bartek {0}, a Dumbledore {0}", 12, 7, 623)]
+        [TestCase("1 2 3", "{0} {0} {0}", 1, 2, 3)]
+        [TestCase("Magda ma 12 lat, Bartek 7, a Dumbledore 623", "Magda ma {0} lat, Bartek {0}, a Dumbledore {0}", 12, 7, 623)]
         public void ParseManyInts_Success(string source, string template, int expected0, int expected1, int expected2)
         {
             int[] actuals = Parse.Many<int>(source, template);
@@ -21,9 +21,8 @@ namespace Parsevoir.Tests.Parses
         }
 
         [Theory]
-        [InlineData("1 łapeć 2.3 4", "{0} {1} {2} {0}", 1, "łapeć", 2.3, 4)]
-        public void ParseManyDifferents_Success(string source, string template, int expected0, string expected1,
-            float expected2, int expected3)
+        [TestCase("1 łapeć 2.3 4", "{0} {1} {2} {0}", 1, "łapeć", 2.3f, 4)]
+        public void ParseManyDifferents_Success(string source, string template, int expected0, string expected1, float expected2, int expected3)
         {
             var (actuals0, actuals1, actuals2) =
                 Parse.Many<int, string, float>(source, template);
@@ -39,9 +38,8 @@ namespace Parsevoir.Tests.Parses
         }
 
         [Theory]
-        [InlineData("1 łapeć 2 4", "{0} {1} {0} {0}", 1, "łapeć", 2, 4)]
-        public void ParseManyDifferentsWithOneEmpty_Success(string source, string template, int expected0,
-            string expected1, int expected2, int expected3)
+        [TestCase("1 łapeć 2 4", "{0} {1} {0} {0}", 1, "łapeć", 2, 4)]
+        public void ParseManyDifferentsWithOneEmpty_Success(string source, string template, int expected0, string expected1, int expected2, int expected3)
         {
             var (actuals0, actuals1, actuals2) =
                 Parse.Many<int, string, float>(source, template);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 
 namespace Parsevoir.Utils;
 
@@ -8,7 +7,7 @@ internal static class Brackets
     private const char OpenChar = '{';
     private const char CloseChar = '}';
 
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
     private static readonly Tuple<string, string> OneBracket = new ($"{OpenChar}", $"{CloseChar}");
     private static readonly Tuple<string, string> TwoBrackets = new ($"{OpenChar}{OpenChar}", $"{CloseChar}{CloseChar}");
 #else
@@ -16,8 +15,8 @@ internal static class Brackets
     private static readonly (string, string) TwoBrackets = ($"{OpenChar}{OpenChar}", $"{CloseChar}{CloseChar}");
 #endif
     
-#if NETSTANDARD2_0 || NETSTANDARD2_1
-    internal static Tuple <string, string> GetOpenAndCloseString(int bracketsCount)
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
+    internal static Tuple<string, string> GetOpenAndCloseString(int bracketsCount)
 #else
     internal static (string open, string close) GetOpenAndCloseString(int bracketsCount)
 #endif
@@ -35,7 +34,7 @@ internal static class Brackets
                 string open = new string(OpenChar, bracketsCount);
                 string close = new string(CloseChar, bracketsCount);
 
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
                 return new Tuple<string, string>(open, close);
 #else
                 return (open, close);

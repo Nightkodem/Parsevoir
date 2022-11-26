@@ -1,4 +1,5 @@
 using System;
+using Parsevoir.Compatibility;
 
 namespace Parsevoir.Collections;
 
@@ -41,7 +42,7 @@ internal class LinkedCollection<T>
 
     public T[] ToArray()
     {
-        if (_first is null) return Array.Empty<T>();
+        if (_first is null) return EmptyArray.Value<T>();
         
         T[] array = new T[Count];
         

@@ -41,7 +41,7 @@ internal class StringSplitter
         _resultsCount = resultsCount;
         _options = options ?? ParsingOptions.DefaultParsingOptions;
         
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
         var brackets = Brackets.GetOpenAndCloseString(bracketsCount);
         _openMark = brackets.Item1;
         _closeMark = brackets.Item2;
@@ -59,26 +59,19 @@ internal class StringSplitter
         {
             string value = GetNext(out int typeNumber, out last);
 
-            if (typesToSplitsCollection.TryGetValue(typeNumber, out var splitsCollection))
-            {
-                splitsCollection.Add(value);
-            }
-            else
-            {
-                var newSplitsCollection = new LinkedCollection<string>();
-                newSplitsCollection.Add(value);
-                typesToSplitsCollection.Add(typeNumber, newSplitsCollection);
-            }
+            bool contains = typesToSplitsCollection.TryGetValue(typeNumber, out var splitsCollection);
+            
+            splitsCollection ??= new LinkedCollection<string>();
+            splitsCollection.Add(value);
+            
+            if (!contains) typesToSplitsCollection.Add(typeNumber, splitsCollection);
         }
         
         var typesToSplits = new Dictionary<int, string[]>(typesToSplitsCollection.Count);
 
         foreach (var typeSplitPair in typesToSplitsCollection)
         {
-            int typeNumber = typeSplitPair.Key;
-            LinkedCollection<string>? splitCollection = typeSplitPair.Value;
-            
-            typesToSplits.Add(typeNumber, splitCollection.ToArray());
+            typesToSplits.Add(typeSplitPair.Key, typeSplitPair.Value.ToArray());
         }
 
         return typesToSplits;
@@ -109,7 +102,7 @@ internal class StringSplitter
         {
             ValidateIndices();
 
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
             var startsAndEnds = GetStartAndEnd();
             int outerStart = startsAndEnds.Item1;
             int start = startsAndEnds.Item2;
@@ -132,7 +125,7 @@ internal class StringSplitter
 
             _nextStart = GetNextStart(outerEnd);
 
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
             var sourceStartAndEnd = GetSourceStartAndEnd(outerStart, outerEnd, _nextStart.Value, wasSkip);
             int sourceStart = sourceStartAndEnd.Item1;
             int sourceEnd = sourceStartAndEnd.Item2;
@@ -156,11 +149,12 @@ internal class StringSplitter
     {
         if (_templateIndex >= _template.Length)
             throw new EndOfTemplateStringException("End of template string!", _templateIndex, _template);
+        
         if (_sourceIndex >= _source.Length)
             throw new EndOfSourceStringException("End of source string!", _sourceIndex, _source);
     }
 
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
     private Tuple<int, int, int, int> GetStartAndEnd()
 #else
     private (int outerStart, int start, int end, int outerEnd) GetStartAndEnd()
@@ -176,7 +170,7 @@ internal class StringSplitter
             throw new ClosingMarkNotFoundException(start);
         int outerEnd = end + _closeMark.Length - 1;
 
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
         return new Tuple<int, int, int, int>(outerStart, start, end, outerEnd);
 #else
         return (outerStart, start, end, outerEnd);
@@ -190,24 +184,18 @@ internal class StringSplitter
         return typeIndex;
     }
 
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
     private Tuple<int, int> GetSourceStartAndEnd(int outerStart, int outerEnd, int nextStart, bool wasSkip)
 #else
     private (int sourceStart, int sourceEnd) GetSourceStartAndEnd(int outerStart, int outerEnd, int nextStart, bool wasSkip)
 #endif
     {
-#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET461 || NET462 || NET47 || NET471 || NET472 || NET48
-        string sourceAsSpan = _source;
-        string templateAsSpan = _template;
-#else
         ReadOnlySpan<char> sourceAsSpan = _source;
         ReadOnlySpan<char> templateAsSpan = _template;
-#endif
         
         int templateStartOffset = outerStart - _templateIndex;
         int sourceStart = wasSkip
-            ? sourceAsSpan.IndexOfSubstring(_sourceIndex, templateAsSpan, _templateIndex, outerStart, _options)
-              + templateStartOffset
+            ? sourceAsSpan.IndexOfSubstring(_sourceIndex, templateAsSpan, _templateIndex, outerStart, _options) + templateStartOffset
             : _sourceIndex + templateStartOffset;
 
         if (sourceStart >= _source.Length)
@@ -218,7 +206,7 @@ internal class StringSplitter
             ? _source.Length
             : sourceAsSpan.IndexOfSubstring(sourceStart, templateAsSpan, outerEnd + 1, nextStart, _options);
         
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
         return new Tuple<int, int>(sourceStart, sourceEnd);
 #else
         return (sourceStart, sourceEnd);

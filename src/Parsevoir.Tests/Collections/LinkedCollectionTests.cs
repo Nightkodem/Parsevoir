@@ -1,7 +1,7 @@
 using System;
 using FluentAssertions;
 using Parsevoir.Collections;
-using Xunit;
+using NUnit.Framework;
 
 namespace Parsevoir.Tests.Collections
 {
@@ -9,7 +9,7 @@ namespace Parsevoir.Tests.Collections
     {
         private static readonly (string val1, string val2, string val3, string val4, string val5) Values = ("1", "2", "3", "4", "5");
 
-        [Fact]
+        [Test]
         public void Ctor_Success()
         {
             LinkedCollection<string> collection = null;
@@ -20,7 +20,7 @@ namespace Parsevoir.Tests.Collections
             collection.Should().NotBeNull();
         }
 
-        [Fact]
+        [Test]
         public void AddValues_Success()
         {
             var collection = new LinkedCollection<string>();
@@ -34,7 +34,7 @@ namespace Parsevoir.Tests.Collections
             collection.Count.Should().Be(3);
         }
 
-        [Fact]
+        [Test]
         public void ToArray_Success()
         {
             var collection = new LinkedCollection<string>();
@@ -62,7 +62,7 @@ namespace Parsevoir.Tests.Collections
             array.Should().Contain(Values.val5);
         }
 
-        [Fact]
+        [Test]
         public void Clear_Success()
         {
             var collection = new LinkedCollection<string>();
@@ -85,7 +85,7 @@ namespace Parsevoir.Tests.Collections
             collection.Count.Should().Be(2);
         }
 
-        [Fact]
+        [Test]
         public void ToEmptyArray_Success()
         {
             var collection = new LinkedCollection<string>();

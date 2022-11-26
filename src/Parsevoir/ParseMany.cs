@@ -16,7 +16,7 @@ public static partial class Parse
         return convert.ToResults<T>(splits);
     }
 
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
     
     public static Tuple<T0[], T1[]> Many<T0, T1>(string source, string template, int bracketsCount = 1, ParsingOptions? options = null)
         where T0 : IConvertible

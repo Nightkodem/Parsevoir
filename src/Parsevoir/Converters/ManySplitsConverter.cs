@@ -20,7 +20,7 @@ internal class ManySplitsConverter
         return values;
     }
 
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
     
     internal Tuple<T0[], T1[]> ToResults<T0, T1>(IReadOnlyDictionary<int, string[]> typesToSplits)
     {

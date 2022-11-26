@@ -67,9 +67,9 @@ jobs:
     - name: Test on .NET 6.0
       run: dotnet test -c Release -f net6.0 --no-build --no-restore --verbosity normal
 
-    - name: Test on .NET Framework 4.7.2 (Windows only)
+    - name: Test on .NET Framework 4.5.2 (Windows only)
       if: matrix.os == 'windows-latest'
-      run: dotnet test -c Release -f net472 --no-build --no-restore
+      run: dotnet test -c Release -f net452 --no-build --no-restore
 
     - name: Test on .NET Framework 4.8 (Windows only)
       if: matrix.os == 'windows-latest'

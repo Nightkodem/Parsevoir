@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Parsevoir.Utils;
+using Parsevoir.Compatibility;
 
 namespace Parsevoir.Converters;
 
@@ -34,9 +34,9 @@ internal class Convert
 
     internal T[] To<T>(IReadOnlyDictionary<int, string[]> typesToSplits, int typeNumber)
     {
-        return typesToSplits.TryGetValue(typeNumber, out var splits)
+        return typesToSplits.TryGetValue(typeNumber, out string[]? splits)
             ? To<T>(splits)
-            : Array.Empty<T>();
+            : EmptyArray.Value<T>();
     }
 
     internal T[] To<T>(string[] splits)
@@ -49,7 +49,6 @@ internal class Convert
         {
             values[i] = To<T>(splits[i], typeCode);
         }
-
         return values;
     }
 
@@ -62,7 +61,6 @@ internal class Convert
     internal object ToObjectOf<T>(string text, TypeCode? typeCode = null)
     {
         typeCode ??= TypeCodes[typeof(T)];
-
         return typeCode switch
         {
             TypeCode.Boolean => Boolean.Parse(text),
@@ -78,7 +76,9 @@ internal class Convert
             TypeCode.Single => Single.Parse(text, _options.FloatingNumberStyles, _options.NumberFormatInfo),
             TypeCode.Double => Double.Parse(text, _options.FloatingNumberStyles, _options.NumberFormatInfo),
             TypeCode.Decimal => Decimal.Parse(text, _options.FloatingNumberStyles, _options.NumberFormatInfo),
-            TypeCode.DateTime => DateTime.Parse(text),
+            TypeCode.DateTime => _options.DateTimeFormatString is null
+                ? DateTime.Parse(text, _options.DateTimeFormatInfo, _options.DateTimeStyles)
+                : DateTime.ParseExact(text, _options.DateTimeFormatString, _options.DateTimeFormatInfo, _options.DateTimeStyles),
             TypeCode.String => text,
             _ => throw new ArgumentOutOfRangeException(nameof(typeCode), $"Invalid type passed! Type: {typeof(T).FullName}")
         };

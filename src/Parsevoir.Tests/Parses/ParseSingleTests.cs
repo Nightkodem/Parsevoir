@@ -1,15 +1,15 @@
 using System;
 using FluentAssertions;
 using Parsevoir.Exceptions;
-using Xunit;
+using NUnit.Framework;
 
 namespace Parsevoir.Tests.Parses
 {
     public class ParseSingleTests
     {
         [Theory]
-        [InlineData("123", "{0}", 123)]
-        [InlineData("Liczba 12 jest mała", "Liczba {0} jest mała", 12)]
+        [TestCase("123", "{0}", 123)]
+        [TestCase("Liczba 12 jest mała", "Liczba {0} jest mała", 12)]
         public void ParseSingleOneInt_Success(
             string source,
             string template,
@@ -21,17 +21,17 @@ namespace Parsevoir.Tests.Parses
         }
 
         [Theory]
-        [InlineData("123 321", "{0} {1}", 123, 321)]
-        [InlineData("Liczba 12 jest mała, a liczba 87 bardzo duża.", "Liczba {0} jest mała, a liczba {1} bardzo duża.", 12, 87)]
-        [InlineData("Liczba 12 jest mała, a liczba 87", "Liczba {0} jest mała, a liczba {1}", 12, 87)]
-        [InlineData("1234 jest mała, a liczba 8", "{0} jest mała, a liczba {1}", 1234, 8)]
+        [TestCase("123 321", "{0} {1}", 123, 321)]
+        [TestCase("Liczba 12 jest mała, a liczba 87 bardzo duża.", "Liczba {0} jest mała, a liczba {1} bardzo duża.", 12, 87)]
+        [TestCase("Liczba 12 jest mała, a liczba 87", "Liczba {0} jest mała, a liczba {1}", 12, 87)]
+        [TestCase("1234 jest mała, a liczba 8", "{0} jest mała, a liczba {1}", 1234, 8)]
         public void ParseSingleTwoInts_Success(
             string source,
             string template,
             int expected0,
             int expected1)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
             var (actual0, actual1) = Parse.Single<int, int>(source, template);
 #else
             var (actual0, actual1) = Parse.Single<int, int>(source, template);
@@ -42,8 +42,8 @@ namespace Parsevoir.Tests.Parses
         }
 
         [Theory]
-        [InlineData("1 2 3", "{0} {1} {2}", 1, 2, 3)]
-        [InlineData("Liczba3jestmniejsza niż 4, ale większa od2", "Liczba{0}jestmniejsza niż {1}, ale większa od{2}", 3, 4, 2)]
+        [TestCase("1 2 3", "{0} {1} {2}", 1, 2, 3)]
+        [TestCase("Liczba3jestmniejsza niż 4, ale większa od2", "Liczba{0}jestmniejsza niż {1}, ale większa od{2}", 3, 4, 2)]
         public void ParseSingleThreeInts_Success(
             string source,
             string template,
@@ -51,7 +51,7 @@ namespace Parsevoir.Tests.Parses
             int expected1,
             int expected2)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
             var (actual0, actual1, actual2) = Parse.Single<int, int, int>(source, template);
 #else
             var (actual0, actual1, actual2) = Parse.Single<int, int, int>(source, template);
@@ -63,7 +63,7 @@ namespace Parsevoir.Tests.Parses
         }
 
         [Theory]
-        [InlineData("1 2 3 4", "{0} {1} {2} {3}", 1, 2, 3, 4)]
+        [TestCase("1 2 3 4", "{0} {1} {2} {3}", 1, 2, 3, 4)]
         public void ParseSingleFourInts_Success(
             string source,
             string template,
@@ -72,7 +72,7 @@ namespace Parsevoir.Tests.Parses
             int expected2,
             int expected3)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
             var (actual0, actual1, actual2, actual3) = Parse.Single<int, int, int, int>(source, template);
 #else
             var (actual0, actual1, actual2, actual3) = Parse.Single<int, int, int, int>(source, template);
@@ -85,7 +85,7 @@ namespace Parsevoir.Tests.Parses
         }
 
         [Theory]
-        [InlineData("1 2 3 4 5", "{0} {1} {2} {3} {4}", 1, 2, 3, 4, 5)]
+        [TestCase("1 2 3 4 5", "{0} {1} {2} {3} {4}", 1, 2, 3, 4, 5)]
         public void ParseSingleFiveInts_Success(
             string source,
             string template,
@@ -95,7 +95,7 @@ namespace Parsevoir.Tests.Parses
             int expected3,
             int expected4)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
             var (actual0, actual1, actual2, actual3, actual4) = Parse.Single<int, int, int, int, int>(source, template);
 #else
             var (actual0, actual1, actual2, actual3, actual4) = Parse.Single<int, int, int, int, int>(source, template);
@@ -109,7 +109,7 @@ namespace Parsevoir.Tests.Parses
         }
 
         [Theory]
-        [InlineData("1 2 3 4 5 6", "{0} {1} {2} {3} {4} {5}", 1, 2, 3, 4, 5, 6)]
+        [TestCase("1 2 3 4 5 6", "{0} {1} {2} {3} {4} {5}", 1, 2, 3, 4, 5, 6)]
         public void ParseSingleSixInts_Success(
             string source,
             string template,
@@ -120,7 +120,7 @@ namespace Parsevoir.Tests.Parses
             int expected4,
             int expected5)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
             var (actual0, actual1, actual2, actual3, actual4, actual5) =
                 Parse.Single<int, int, int, int, int, int>(source, template);
 #else
@@ -137,7 +137,7 @@ namespace Parsevoir.Tests.Parses
         }
 
         [Theory]
-        [InlineData("1 2 3 4 5 6 7", "{0} {1} {2} {3} {4} {5} {6}", 1, 2, 3, 4, 5, 6, 7)]
+        [TestCase("1 2 3 4 5 6 7", "{0} {1} {2} {3} {4} {5} {6}", 1, 2, 3, 4, 5, 6, 7)]
         public void ParseSingleSevenInts_Success(
             string source,
             string template,
@@ -149,7 +149,7 @@ namespace Parsevoir.Tests.Parses
             int expected5,
             int expected6)
         {
-#if NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
             var (actual0, actual1, actual2, actual3, actual4, actual5, actual6) =
                 Parse.Single<int, int, int, int, int, int, int>(source, template);
 #else
@@ -169,7 +169,7 @@ namespace Parsevoir.Tests.Parses
 #if !(NETSTANDARD2_0 || NETSTANDARD2_1)
         
         [Theory]
-        [InlineData("1 2 3 4 5 6 7 8", "{0} {1} {2} {3} {4} {5} {6} {7}", 1, 2, 3, 4, 5, 6, 7, 8)]
+        [TestCase("1 2 3 4 5 6 7 8", "{0} {1} {2} {3} {4} {5} {6} {7}", 1, 2, 3, 4, 5, 6, 7, 8)]
         public void ParseSingleEightInts_Success(
             string source,
             string template,
@@ -196,7 +196,7 @@ namespace Parsevoir.Tests.Parses
         }
 
         [Theory]
-        [InlineData("1 2 3 4 5 6 7 8 9", "{0} {1} {2} {3} {4} {5} {6} {7} {8}", 1, 2, 3, 4, 5, 6, 7, 8, 9)]
+        [TestCase("1 2 3 4 5 6 7 8 9", "{0} {1} {2} {3} {4} {5} {6} {7} {8}", 1, 2, 3, 4, 5, 6, 7, 8, 9)]
         public void ParseSingleNineInts_Success(
             string source,
             string template,
@@ -225,7 +225,7 @@ namespace Parsevoir.Tests.Parses
         }
 
         [Theory]
-        [InlineData("1 2 3 4 5 6 7 8 9 10", "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)]
+        [TestCase("1 2 3 4 5 6 7 8 9 10", "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)]
         public void ParseSingleTenInts_Success(
             string source,
             string template,
@@ -256,7 +256,7 @@ namespace Parsevoir.Tests.Parses
         }
 #endif
 
-        [Fact]
+        [Test]
         public void ParseSingleInt_WrongOpeningBracketFormat_ThrowsException()
         {
             Action act = () => Parse.Single<int>("Liczba 12", "Liczba 0}");
@@ -264,7 +264,7 @@ namespace Parsevoir.Tests.Parses
             act.Should().Throw<OpeningMarkNotFoundException>();
         }
 
-        [Fact]
+        [Test]
         public void ParseSingleInt_WrongClosingBracketFormat_ThrowsException()
         {
             Action act = () => Parse.Single<int>("Liczba 12", "Liczba {0");
@@ -272,7 +272,7 @@ namespace Parsevoir.Tests.Parses
             act.Should().Throw<ClosingMarkNotFoundException>();
         }
 
-        [Fact]
+        [Test]
         public void ParseSingleInt_WrongSourceFormat_ThrowsException()
         {
             Action act = () => Parse.Single<int>("Liczb", "Liczba {0}");
@@ -280,7 +280,7 @@ namespace Parsevoir.Tests.Parses
             act.Should().Throw<EndOfSourceStringException>();
         }
 
-        [Fact]
+        [Test]
         public void ParseSingleInt_WrongTemplateFormat_ThrowsException()
         {
             Action act = () => Parse.Single<int, int>("Liczba 12 i 13", "Liczba {0}");
@@ -288,7 +288,7 @@ namespace Parsevoir.Tests.Parses
             act.Should().Throw<EndOfTemplateStringException>();
         }
 
-        [Fact]
+        [Test]
         public void ParseSingleInt_EmptyResult_ThrowsException()
         {
             Action act = () => Parse.Single<int>("Liczba  nie ma liczby", "Liczba {0} nie ma liczby");
