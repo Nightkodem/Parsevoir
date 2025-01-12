@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 
-namespace Parsevoir.Tests.Parses
+namespace Parsevoir.Tests.Parsers
 {
     public class ParseOtherTypesTests
     {

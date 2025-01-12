@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Parsevoir.Converters;
 using Parsevoir.Utils;
 
@@ -9,8 +10,8 @@ public static partial class Parse
     public static T[] Many<T>(string source, string template, int bracketsCount = 1, ParsingOptions? options = null)
         where T : IConvertible
     {
-        var stringSplitter = new StringSplitter(source, template, -1, bracketsCount, options);
-        var splits = stringSplitter.SplitMany();
+        StringSplitter stringSplitter = new(source, template, -1, bracketsCount, options);
+        IReadOnlyDictionary<int, IEnumerable<string>> splits = stringSplitter.SplitMany();
 
         var convert = new ManySplitsConverter(options);
         return convert.ToResults<T>(splits);

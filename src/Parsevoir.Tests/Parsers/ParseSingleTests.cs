@@ -1,9 +1,9 @@
 using System;
 using FluentAssertions;
-using Parsevoir.Exceptions;
 using NUnit.Framework;
+using Parsevoir.Exceptions;
 
-namespace Parsevoir.Tests.Parses
+namespace Parsevoir.Tests.Parsers
 {
     public class ParseSingleTests
     {

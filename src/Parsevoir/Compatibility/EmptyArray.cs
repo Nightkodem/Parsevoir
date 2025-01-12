@@ -15,7 +15,7 @@ namespace Parsevoir.Compatibility
         
 #else
         
-        public static T[] Value<T>() =>  Array.Empty<T>();
+        public static T[] Value<T>() => Array.Empty<T>();
 
 #endif
     }

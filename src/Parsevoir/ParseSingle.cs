@@ -15,8 +15,7 @@ public static partial class Parse
 
         var stringSplitter = new StringSplitter(source, template, results, bracketsCount, options);
         var splits = stringSplitter.SplitSingles();
-
-
+        
         var splitsConverter = new SingleSplitsConverter(options);
         return splitsConverter.ToResults<T>(splits);
     }
