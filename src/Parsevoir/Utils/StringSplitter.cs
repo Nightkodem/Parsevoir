@@ -50,7 +50,7 @@ internal class StringSplitter
 #endif
     }
 
-    internal IReadOnlyDictionary<int, string[]> SplitMany()
+    internal IReadOnlyDictionary<int, IEnumerable<string>> SplitMany()
     {
         var typesToSplitsCollection = new Dictionary<int, LinkedCollection<string>>();
 
@@ -59,7 +59,7 @@ internal class StringSplitter
         {
             string value = GetNext(out int typeNumber, out last);
 
-            bool contains = typesToSplitsCollection.TryGetValue(typeNumber, out var splitsCollection);
+            bool contains = typesToSplitsCollection.TryGetValue(typeNumber, out LinkedCollection<string>? splitsCollection);
             
             splitsCollection ??= new LinkedCollection<string>();
             splitsCollection.Add(value);
@@ -67,11 +67,11 @@ internal class StringSplitter
             if (!contains) typesToSplitsCollection.Add(typeNumber, splitsCollection);
         }
         
-        var typesToSplits = new Dictionary<int, string[]>(typesToSplitsCollection.Count);
+        var typesToSplits = new Dictionary<int, IEnumerable<string>>(typesToSplitsCollection.Count);
 
         foreach (var typeSplitPair in typesToSplitsCollection)
         {
-            typesToSplits.Add(typeSplitPair.Key, typeSplitPair.Value.ToArray());
+            typesToSplits.Add(typeSplitPair.Key, typeSplitPair.Value);
         }
 
         return typesToSplits;

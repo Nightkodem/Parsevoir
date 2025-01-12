@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Parsevoir.Compatibility;
 
 namespace Parsevoir.Converters;
 
 internal class Convert
 {
-    private static readonly IReadOnlyDictionary<Type, TypeCode> TypeCodes = new Dictionary<Type, TypeCode>
+    private static readonly Dictionary<Type, TypeCode> TypeCodes = new()
     {
         { typeof(bool), TypeCode.Boolean },
         { typeof(char), TypeCode.Char },
@@ -32,23 +33,21 @@ internal class Convert
         _options = options;
     }
 
-    internal T[] To<T>(IReadOnlyDictionary<int, string[]> typesToSplits, int typeNumber)
+    internal T[] To<T>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits, int typeNumber)
     {
-        return typesToSplits.TryGetValue(typeNumber, out string[]? splits)
+        return typesToSplits.TryGetValue(typeNumber, out IEnumerable<string>? splits)
             ? To<T>(splits)
             : EmptyArray.Value<T>();
     }
 
-    internal T[] To<T>(string[] splits)
+    internal T[] To<T>(IEnumerable<string> splits, TypeCode? typeCode = null)
     {
-        int length = splits.Length;
-        T[] values = new T[length];
+        typeCode ??= GetTypeCodeSafe<T>();
         
-        TypeCode typeCode = TypeCodes[typeof(T)];
-        for (int i = 0; i < length; i++)
-        {
-            values[i] = To<T>(splits[i], typeCode);
-        }
+        T[] values = splits
+            .Select(split => To<T>(split, typeCode))
+            .ToArray();
+        
         return values;
     }
 
@@ -60,7 +59,7 @@ internal class Convert
 
     internal object ToObjectOf<T>(string text, TypeCode? typeCode = null)
     {
-        typeCode ??= TypeCodes[typeof(T)];
+        typeCode ??= GetTypeCodeSafe<T>();
         return typeCode switch
         {
             TypeCode.Boolean => Boolean.Parse(text),
@@ -80,7 +79,12 @@ internal class Convert
                 ? DateTime.Parse(text, _options.DateTimeFormatInfo, _options.DateTimeStyles)
                 : DateTime.ParseExact(text, _options.DateTimeFormatString, _options.DateTimeFormatInfo, _options.DateTimeStyles),
             TypeCode.String => text,
+            TypeCode.Object => text,
             _ => throw new ArgumentOutOfRangeException(nameof(typeCode), $"Invalid type passed! Type: {typeof(T).FullName}")
         };
     }
+
+    private static TypeCode GetTypeCodeSafe<T>() => TypeCodes.TryGetValue(typeof(T), out TypeCode typeCode)
+        ? typeCode
+        : TypeCode.Empty;
 }

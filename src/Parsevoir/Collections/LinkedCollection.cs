@@ -1,9 +1,11 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using Parsevoir.Compatibility;
 
 namespace Parsevoir.Collections;
 
-internal class LinkedCollection<T>
+internal class LinkedCollection<T> : IEnumerable<T>
+    where T : notnull
 {
     public int Count { get; private set; }
 
@@ -37,7 +39,7 @@ internal class LinkedCollection<T>
     {
         Count = 0;
         _first = null;
-        _last = _first;
+        _last = null;
     }
 
     public T[] ToArray()
@@ -51,12 +53,17 @@ internal class LinkedCollection<T>
         while (current is not null)
         {
             array[i] = current.Value;
-            i++;
+            
             current = current.Next;
+            i++;
         }
 
         return array;
     }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    public IEnumerator<T> GetEnumerator() => new Enumerator(this);
 
     internal class Node
     {
@@ -66,6 +73,46 @@ internal class LinkedCollection<T>
         public Node(T item)
         {
             Value = item;
+        }
+    }
+
+    public struct Enumerator : IEnumerator<T>, IEnumerator
+    {
+        private readonly LinkedCollection<T> _collection;
+        private Node? _node;
+        private T _current;
+
+        object IEnumerator.Current => Current;
+        public T Current => _current;
+
+        public Enumerator(LinkedCollection<T> collection)
+        {
+            _collection = collection;
+            _node = _collection._first;
+            _current = default!;
+        }
+
+        public bool MoveNext()
+        {
+            if (_node is null)
+                return false;
+            
+            _current = _node.Value;
+            _node = _node != _collection._last
+                ? _node.Next
+                : null;
+
+            return true;
+        }
+
+        public void Reset()
+        {
+            _node = _collection._first;
+            _current = default!;
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

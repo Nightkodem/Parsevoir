@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using Parsevoir.Collections;
 using NUnit.Framework;
@@ -97,6 +98,32 @@ namespace Parsevoir.Tests.Collections
             act.Should().NotThrow();
             array.Should().NotBeNull();
             array.Should().BeEmpty();
+        }
+
+        [Test]
+        public void GetEnumerator_Success()
+        {
+            LinkedCollection<string> collection = new LinkedCollection<string>()
+            {
+                Values.val1,
+                Values.val2,
+                Values.val3,
+            };
+
+            List<string> collectionList = new List<string>();
+
+            int iteration = 0;
+            foreach (string str in collection)
+            {
+                collectionList.Add(str);
+                iteration++;
+            }
+
+            iteration.Should().Be(collection.Count);
+            collectionList.Should().HaveCount(collection.Count);
+            collectionList.Should().Contain(Values.val1);
+            collectionList.Should().Contain(Values.val2);
+            collectionList.Should().Contain(Values.val3);
         }
     }
 }

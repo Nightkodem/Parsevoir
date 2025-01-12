@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Parsevoir.Converters;
@@ -14,7 +12,7 @@ internal class ManySplitsConverter
         _convert = new Convert(options ?? ParsingOptions.DefaultParsingOptions);
     }
 
-    internal T[] ToResults<T>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal T[] ToResults<T>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T[] values = _convert.To<T>(typesToSplits, 0);
         return values;
@@ -22,14 +20,14 @@ internal class ManySplitsConverter
 
 #if NETSTANDARD2_0 || NETSTANDARD2_1 || NET452
     
-    internal Tuple<T0[], T1[]> ToResults<T0, T1>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal Tuple<T0[], T1[]> ToResults<T0, T1>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
         return new Tuple<T0[], T1[]>(values0, values1);
     }
 
-    internal Tuple<T0[], T1[], T2[]> ToResults<T0, T1, T2>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal Tuple<T0[], T1[], T2[]> ToResults<T0, T1, T2>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
@@ -37,7 +35,7 @@ internal class ManySplitsConverter
         return new Tuple<T0[], T1[], T2[]>(values0, values1, values2);
     }
 
-    internal Tuple<T0[], T1[], T2[], T3[]> ToResults<T0, T1, T2, T3>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal Tuple<T0[], T1[], T2[], T3[]> ToResults<T0, T1, T2, T3>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
@@ -46,7 +44,7 @@ internal class ManySplitsConverter
         return new Tuple<T0[], T1[], T2[], T3[]>(values0, values1, values2, values3);
     }
 
-    internal Tuple<T0[], T1[], T2[], T3[], T4[]> ToResults<T0, T1, T2, T3, T4>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal Tuple<T0[], T1[], T2[], T3[], T4[]> ToResults<T0, T1, T2, T3, T4>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
@@ -56,7 +54,7 @@ internal class ManySplitsConverter
         return new Tuple<T0[], T1[], T2[], T3[], T4[]>(values0, values1, values2, values3, values4);
     }
 
-    internal Tuple<T0[], T1[], T2[], T3[], T4[], T5[]> ToResults<T0, T1, T2, T3, T4, T5>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal Tuple<T0[], T1[], T2[], T3[], T4[], T5[]> ToResults<T0, T1, T2, T3, T4, T5>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
@@ -67,7 +65,7 @@ internal class ManySplitsConverter
         return new Tuple<T0[], T1[], T2[], T3[], T4[], T5[]>(values0, values1, values2, values3, values4, values5);
     }
 
-    internal Tuple<T0[], T1[], T2[], T3[], T4[], T5[], T6[]> ToResults<T0, T1, T2, T3, T4, T5, T6>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal Tuple<T0[], T1[], T2[], T3[], T4[], T5[], T6[]> ToResults<T0, T1, T2, T3, T4, T5, T6>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
@@ -81,14 +79,14 @@ internal class ManySplitsConverter
 
 #else
     
-    internal (T0[], T1[]) ToResults<T0, T1>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal (T0[], T1[]) ToResults<T0, T1>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
         return (values0, values1);
     }
 
-    internal (T0[], T1[], T2[]) ToResults<T0, T1, T2>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal (T0[], T1[], T2[]) ToResults<T0, T1, T2>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
@@ -96,7 +94,7 @@ internal class ManySplitsConverter
         return (values0, values1, values2);
     }
 
-    internal (T0[], T1[], T2[], T3[]) ToResults<T0, T1, T2, T3>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal (T0[], T1[], T2[], T3[]) ToResults<T0, T1, T2, T3>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
@@ -105,7 +103,7 @@ internal class ManySplitsConverter
         return (values0, values1, values2, values3);
     }
 
-    internal (T0[], T1[], T2[], T3[], T4[]) ToResults<T0, T1, T2, T3, T4>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal (T0[], T1[], T2[], T3[], T4[]) ToResults<T0, T1, T2, T3, T4>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
@@ -115,7 +113,7 @@ internal class ManySplitsConverter
         return (values0, values1, values2, values3, values4);
     }
 
-    internal (T0[], T1[], T2[], T3[], T4[], T5[]) ToResults<T0, T1, T2, T3, T4, T5>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal (T0[], T1[], T2[], T3[], T4[], T5[]) ToResults<T0, T1, T2, T3, T4, T5>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
@@ -126,7 +124,7 @@ internal class ManySplitsConverter
         return (values0, values1, values2, values3, values4, values5);
     }
 
-    internal (T0[], T1[], T2[], T3[], T4[], T5[], T6[]) ToResults<T0, T1, T2, T3, T4, T5, T6>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal (T0[], T1[], T2[], T3[], T4[], T5[], T6[]) ToResults<T0, T1, T2, T3, T4, T5, T6>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
@@ -138,7 +136,7 @@ internal class ManySplitsConverter
         return (values0, values1, values2, values3, values4, values5, values6);
     }
 
-    internal (T0[], T1[], T2[], T3[], T4[], T5[], T6[], T7[]) ToResults<T0, T1, T2, T3, T4, T5, T6, T7>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal (T0[], T1[], T2[], T3[], T4[], T5[], T6[], T7[]) ToResults<T0, T1, T2, T3, T4, T5, T6, T7>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
@@ -151,7 +149,7 @@ internal class ManySplitsConverter
         return (values0, values1, values2, values3, values4, values5, values6, values7);
     }
 
-    internal (T0[], T1[], T2[], T3[], T4[], T5[], T6[], T7[], T8[]) ToResults<T0, T1, T2, T3, T4, T5, T6, T7, T8>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal (T0[], T1[], T2[], T3[], T4[], T5[], T6[], T7[], T8[]) ToResults<T0, T1, T2, T3, T4, T5, T6, T7, T8>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
@@ -165,7 +163,7 @@ internal class ManySplitsConverter
         return (values0, values1, values2, values3, values4, values5, values6, values7, values8);
     }
 
-    internal (T0[], T1[], T2[], T3[], T4[], T5[], T6[], T7[], T8[], T9[]) ToResults<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(IReadOnlyDictionary<int, string[]> typesToSplits)
+    internal (T0[], T1[], T2[], T3[], T4[], T5[], T6[], T7[], T8[], T9[]) ToResults<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(IReadOnlyDictionary<int, IEnumerable<string>> typesToSplits)
     {
         T0[] values0 = _convert.To<T0>(typesToSplits, 0);
         T1[] values1 = _convert.To<T1>(typesToSplits, 1);
